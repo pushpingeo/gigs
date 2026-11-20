@@ -1,0 +1,50 @@
+{
+  "test_id": "tfm-ed50-utm31",
+  "source_crs": "EPSG:23031",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1311",
+    "name": "ED50 to WGS 84 (18)",
+    "accuracy_m": 1,
+    "why": "Same North Sea ED50 to WGS 84 operation as for geographic ED50; UTM zone 31N inverted to ED50 first"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 58.245227007,
+      "lon": 1.285531215
+    },
+    {
+      "id": "P02",
+      "lat": 56.560839474,
+      "lon": 1.250035967
+    },
+    {
+      "id": "P03",
+      "lat": 58.430553314,
+      "lon": 1.290916888
+    },
+    {
+      "id": "P04",
+      "lat": 57.565839414,
+      "lon": 1.018200782
+    },
+    {
+      "id": "P05",
+      "lat": 56.741221948,
+      "lon": 1.275779569
+    },
+    {
+      "id": "P06",
+      "lat": 56.60801728,
+      "lon": 1.236131389
+    }
+  ],
+  "outside_area_of_use": [],
+  "round_trip": [],
+  "assumptions": "Inverse UTM zone 31N on ED50 (EPSG:23031 to EPSG:4230), then EPSG:1311.",
+  "notes": "PROJ default for 23031->4326 picks ED50 to WGS 84 (1) (about 1 m different); EPSG:1311 chosen deliberately for North Sea accuracy."
+}

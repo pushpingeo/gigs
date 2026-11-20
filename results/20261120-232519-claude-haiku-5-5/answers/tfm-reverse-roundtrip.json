@@ -1,0 +1,81 @@
+{
+  "test_id": "tfm-reverse-roundtrip",
+  "source_crs": "EPSG:4326",
+  "target_crs": "EPSG:4277",
+  "operation": {
+    "code": "EPSG:7710",
+    "name": "OSGB36 to WGS 84 (9)",
+    "accuracy_m": 1,
+    "why": "OSTN15-based grid, 1 m; applied in reverse (WGS 84 to OSGB36)"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 57.464195161,
+      "lon": -4.05762567
+    },
+    {
+      "id": "P02",
+      "lat": 53.863032521,
+      "lon": -1.784562025
+    },
+    {
+      "id": "P03",
+      "lat": 55.973527864,
+      "lon": -4.028005936
+    },
+    {
+      "id": "P04",
+      "lat": 51.420586442,
+      "lon": -0.741696649
+    },
+    {
+      "id": "P05",
+      "lat": 52.608843707,
+      "lon": -1.223715401
+    },
+    {
+      "id": "P06",
+      "lat": 57.178377431,
+      "lon": -4.652838394
+    }
+  ],
+  "outside_area_of_use": [],
+  "round_trip": [
+    {
+      "id": "P01",
+      "lat": 57.4639291,
+      "lon": -4.0590018
+    },
+    {
+      "id": "P02",
+      "lat": 53.8632569,
+      "lon": -1.786075
+    },
+    {
+      "id": "P03",
+      "lat": 55.9734508,
+      "lon": -4.0293149
+    },
+    {
+      "id": "P04",
+      "lat": 51.4210977,
+      "lon": -0.7432129
+    },
+    {
+      "id": "P05",
+      "lat": 52.6092272,
+      "lon": -1.2252322
+    },
+    {
+      "id": "P06",
+      "lat": 57.1781362,
+      "lon": -4.654118
+    }
+  ],
+  "assumptions": "Input is WGS 84 lat/lon (EPSG:4326). Results are OSGB36 geographic (EPSG:4277) lat/lon. Round trip applies the forward operation to the results.",
+  "notes": "Round trip returns to inputs within rounding (see round_trip values)."
+}

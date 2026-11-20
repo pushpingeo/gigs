@@ -1,0 +1,63 @@
+{
+  "test_id": "tfm-outside-area",
+  "source_crs": "EPSG:4277",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:7710",
+    "name": "OSGB36 to WGS 84 (9)",
+    "accuracy_m": 1,
+    "why": "OSTN15-based grid transformation, 1 m, GB/UKCS area"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 51.337519968,
+      "lon": -0.669030695
+    },
+    {
+      "id": "P02",
+      "lat": 52.32757064,
+      "lon": -1.800640923
+    },
+    {
+      "id": "P03",
+      "lat": 57.407059103,
+      "lon": -4.855482086
+    },
+    {
+      "id": "P04",
+      "lat": 54.11629016,
+      "lon": -2.575266301
+    },
+    {
+      "id": "P05",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "P06",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "P07",
+      "lat": 57.129454764,
+      "lon": -4.581663132
+    },
+    {
+      "id": "P08",
+      "lat": 57.412081016,
+      "lon": -4.389285644
+    }
+  ],
+  "outside_area_of_use": [
+    "P05",
+    "P06"
+  ],
+  "round_trip": [],
+  "assumptions": "P05 (47.16N, 2.05E, France) and P06 (56.28N, 120.99E, Siberia/Russia region) lie far outside the OSGB36 area of use; not transformed.",
+  "notes": "Left P05 and P06 as null rather than transforming them with an invalid operation. The other six points were transformed."
+}

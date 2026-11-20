@@ -1,0 +1,733 @@
+{
+  "run": {
+    "seed": 101,
+    "series": "pilot",
+    "skills": false,
+    "created": "2026-11-20T23:25:19+00:00",
+    "grader_registry": "v12.029 (2025-10-02)",
+    "grader_engine": "pyproj 3.8.0 / PROJ 9.8.1",
+    "tests": [
+      "dep-codes",
+      "tfm-bng",
+      "tfm-ed50-geog",
+      "tfm-ed50-utm31",
+      "tfm-osgb36-geog",
+      "tfm-outside-area",
+      "tfm-reverse-roundtrip"
+    ]
+  },
+  "agent": {
+    "agent": "claude-api (built-in loop)",
+    "model": "claude-haiku-5-5",
+    "turns": 21,
+    "usage": {
+      "input_tokens": 350877,
+      "output_tokens": 22546
+    },
+    "log": [
+      {
+        "turn": 0,
+        "tool": "read_file",
+        "input": "{\"path\": \"INSTRUCTIONS.md\"}"
+      },
+      {
+        "turn": 1,
+        "tool": "run_python",
+        "input": "{\"code\": \"import glob\\nfor f in sorted(glob.glob('tasks/*.json')):\\n    print('=====',f); print(open(f).read())\"}"
+      },
+      {
+        "turn": 2,
+        "text": "Seven tasks: six transformation sets and one deprecation check. I'll check the installed PROJ version and what operations the database offers before computing anything."
+      },
+      {
+        "turn": 2,
+        "tool": "run_python",
+        "input": "{\"code\": \"import pyproj, sqlite3, os\\nfrom pyproj.database import get_database_metadata\\nprint(pyproj.__version__, pyproj.proj_version_str if hasattr(pyproj,'proj_version_str') else '')\\nfrom pyproj.network import *\\nfrom pyproj import Transformer\\nfrom pyproj.database import query_crs_info\\nimport pyproj.database as d\\nprint(pyproj.get_database_metadata('DATABASE.LAYOUT.VERSION.MAJOR') if hasattr(pyproj,'get_database_metadata') else '')\\ntry:\\n    print(get_database_metadata('EPSG.VERSION'))\\ne"
+      },
+      {
+        "turn": 3,
+        "text": "PROJ 9.8.1 carries EPSG v12.029, which matches the answer format. Next I'll query the PROJ database directly for deprecation status and the replacement links."
+      },
+      {
+        "turn": 3,
+        "tool": "run_python",
+        "input": "{\"code\": \"import sqlite3, os, pyproj\\ndb=os.path.join(pyproj.datadir.get_data_dir(),'proj.db')\\nc=sqlite3.connect(db)\\ncodes=[20087,10256,6979,32662,7351,21894]\\nfor code in codes:\\n    print('---',code)\\n    for r in c.execute(\\\"select auth_name,code,name,type,deprecated from crs_view where auth_name='EPSG' and code=?\\\",(str(code),)):\\n        print(r)\\n    for r in c.execute(\\\"select * from deprecation where deprecated_auth_name='EPSG' and deprecated_code=?\\\",(str(code),)):\\n        print('  d"
+      },
+      {
+        "turn": 4,
+        "text": "The database gives the deprecation status and replacements. I'll pull the replacement names and the EPSG remarks to support the reasons."
+      },
+      {
+        "turn": 4,
+        "tool": "run_python",
+        "input": "{\"code\": \"import sqlite3, os, pyproj\\ndb=os.path.join(pyproj.datadir.get_data_dir(),'proj.db')\\nc=sqlite3.connect(db)\\nfor code in [2486,7135,32663,3786,21899,20087,6979,32662,21894,10256,7351]:\\n    print(code, c.execute(\\\"select name,type,deprecated from crs_view where auth_name='EPSG' and code=?\\\",(str(code),)).fetchall())\\n    print('  remarks:', c.execute(\\\"select remarks from projected_crs where auth_name='EPSG' and code=?\\\",(str(code),)).fetchall(), c.execute(\\\"select remarks from geodeti"
+      },
+      {
+        "turn": 5,
+        "tool": "run_python",
+        "input": "{\"code\": \"import sqlite3, os, pyproj\\ndb=os.path.join(pyproj.datadir.get_data_dir(),'proj.db')\\nc=sqlite3.connect(db)\\nfor code in [2486,7135,32663,3786,21899,20087,6979,32662,21894,10256,7351]:\\n    print(code, c.execute(\\\"select name,type,deprecated from crs_view where auth_name='EPSG' and code=?\\\",(str(code),)).fetchall())\\n    for t in ['projected_crs','geodetic_crs','crs_view']:\\n        try:\\n            r=c.execute(f\\\"select remarks from {t} where auth_name='EPSG' and code=?\\\",(str(code),"
+      },
+      {
+        "turn": 6,
+        "text": "The database shows some replacements are themselves deprecated. I'll follow those chains before writing the answers."
+      },
+      {
+        "turn": 6,
+        "tool": "run_python",
+        "input": "{\"code\": \"import sqlite3, os, pyproj\\ndb=os.path.join(pyproj.datadir.get_data_dir(),'proj.db')\\nc=sqlite3.connect(db)\\nfor code in [32663,3786,7135,21899,2486]:\\n    print(code, c.execute(\\\"select * from deprecation where deprecated_code=?\\\",(str(code),)).fetchall(), c.execute(\\\"select * from deprecation where replacement_code=?\\\",(str(code),)).fetchall())\\nprint(c.execute(\\\"select name from crs_view where auth_name='EPSG' and code in ('4087','4326')\\\").fetchall())\\nprint(c.execute(\\\"select * fr"
+      },
+      {
+        "turn": 7,
+        "text": "I now have the deprecation picture. Next I'll list the candidate datum transformations for each source-to-WGS 84 pair, with their areas of use and accuracies, and check whether the OSTN15 grid is available locally."
+      },
+      {
+        "turn": 7,
+        "tool": "run_python",
+        "input": "{\"code\": \"from pyproj import Transformer\\nfrom pyproj.transformer import TransformerGroup\\nimport pyproj\\npairs=[('EPSG:27700','EPSG:4326'),('EPSG:4277','EPSG:4326'),('EPSG:4230','EPSG:4326'),('EPSG:23031','EPSG:4326')]\\nfor s,t in pairs:\\n    g=TransformerGroup(s,t,always_xy=True)\\n    print('====',s,t,'unavailable grids:',[x.name for x in g.unavailable_operations][:5], 'best:', g.best_available)\\n    for op in g.transformers:\\n        print(op.to_json_dict().get('id') if False else '', op.desc"
+      },
+      {
+        "turn": 8,
+        "text": "The PROJ groups don't expose EPSG codes directly, so I'll query the database for operation codes, areas of use, and accuracies."
+      },
+      {
+        "turn": 8,
+        "tool": "run_python",
+        "input": "{\"code\": \"import sqlite3, os, pyproj\\ndb=os.path.join(pyproj.datadir.get_data_dir(),'proj.db')\\nc=sqlite3.connect(db)\\nq=\\\"\\\"\\\"select code,name,deprecated,accuracy,area_name,method_name,source_crs_code,target_crs_code,bbox from coordinate_operation_view\\nwhere auth_name='EPSG' and ((source_crs_auth_name='EPSG' and target_crs_auth_name='EPSG' and source_crs_code in ('4277','4230','27700','23031') and target_crs_code in ('4326','4277','4230','27700','23031')) )\\\"\\\"\\\"\\nfor r in c.execute(q):\\n    i"
+      },
+      {
+        "turn": 9,
+        "tool": "run_python",
+        "input": "{\"code\": \"import sqlite3, os, pyproj\\ndb=os.path.join(pyproj.datadir.get_data_dir(),'proj.db')\\nc=sqlite3.connect(db)\\nprint([r[1] for r in c.execute(\\\"pragma table_info(coordinate_operation_view)\\\")])\\nprint([r[1] for r in c.execute(\\\"pragma table_info(usage)\\\")])\"}"
+      },
+      {
+        "turn": 10,
+        "tool": "run_python",
+        "input": "{\"code\": \"import sqlite3, os, pyproj\\ndb=os.path.join(pyproj.datadir.get_data_dir(),'proj.db')\\nc=sqlite3.connect(db)\\nq=\\\"\\\"\\\"select v.code,v.name,v.deprecated,v.accuracy,v.method_name,v.source_crs_code,v.target_crs_code,e.name,e.south_lat,e.north_lat,e.west_lon,e.east_lon\\nfrom coordinate_operation_view v join usage u on u.object_table_name='coordinate_operation' and u.object_code=v.code join extent e on e.auth_name=u.extent_auth_name and e.code=u.extent_code\\nwhere v.auth_name='EPSG' and ((v."
+      },
+      {
+        "turn": 11,
+        "tool": "run_python",
+        "input": "{\"code\": \"import sqlite3, os, pyproj\\ndb=os.path.join(pyproj.datadir.get_data_dir(),'proj.db')\\nc=sqlite3.connect(db)\\nprint(c.execute(\\\"select * from coordinate_operation_view where code='1314'\\\").fetchall())\\nprint(c.execute(\\\"select count(*) from usage\\\").fetchall(), c.execute(\\\"select * from usage limit 2\\\").fetchall())\"}"
+      },
+      {
+        "turn": 12,
+        "tool": "run_python",
+        "input": "{\"code\": \"import sqlite3, os, pyproj\\ndb=os.path.join(pyproj.datadir.get_data_dir(),'proj.db')\\nc=sqlite3.connect(db)\\nq=\\\"\\\"\\\"select v.code,v.name,v.deprecated,v.accuracy,v.method_name,v.source_crs_code,v.target_crs_code,e.name,e.south_lat,e.north_lat,e.west_lon,e.east_lon\\nfrom coordinate_operation_view v join usage u on u.object_table_name=v.table_name and u.object_code=v.code and u.object_auth_name='EPSG' join extent e on e.auth_name=u.extent_auth_name and e.code=u.extent_code\\nwhere v.auth_"
+      },
+      {
+        "turn": 13,
+        "text": "The OSGB36 and ED50 options are clear. Before choosing the ED50 North Sea operation, I'll check whether the UK ED50 offshore operation (\"ED50 to WGS 84 (14)\") is in the database, and whether the OSTN15 and NTv2 grids are installed locally."
+      },
+      {
+        "turn": 13,
+        "tool": "run_python",
+        "input": "{\"code\": \"import sqlite3, os, pyproj\\ndb=os.path.join(pyproj.datadir.get_data_dir(),'proj.db')\\nc=sqlite3.connect(db)\\nfor r in c.execute(\\\"select v.code,v.name,v.deprecated,v.accuracy,v.method_name,v.source_crs_code,v.target_crs_code from coordinate_operation_view v where v.auth_name='EPSG' and v.name like '%ED50 to WGS 84 (1%' or v.name like 'ED50 to WGS 84 (14)%'\\\"): print(r)\\nfor r in c.execute(\\\"select v.code,v.name,v.deprecated,v.accuracy,v.source_crs_code,v.target_crs_code from coordinate"
+      },
+      {
+        "turn": 14,
+        "text": "The UK-wide ED50 offshore operation isn't in this database, so I'll use \"ED50 to WGS 84 (18)\" (EPSG:1311), which covers all the North Sea points. Next I'll check whether the grid files are installed and compute the test points with each candidate operation."
+      },
+      {
+        "turn": 14,
+        "tool": "run_python",
+        "input": "{\"code\": \"import os, pyproj\\nfrom pyproj import Transformer, CRS\\nd=pyproj.datadir.get_data_dir()\\nprint([f for f in os.listdir(d) if f.lower().endswith(('.gsb','.tif','.gtx','.lla'))][:50])\\nprint(pyproj.network.is_network_enabled())\\nfor op in ['EPSG:5339','EPSG:7710','EPSG:1314','EPSG:1311','EPSG:1195']:\\n    t=Transformer.from_crs('EPSG:4277','EPSG:4326',always_xy=True,accuracy=None,allow_ballpark=False) if False else None\\n# Test via pipeline strings by code\\nfrom pyproj import Transformer\\"
+      },
+      {
+        "turn": 15,
+        "text": "The grid files aren't in the local data directory, so I need to confirm whether the NTv2 operations really run before relying on them. I'll test each candidate on a sample point."
+      },
+      {
+        "turn": 15,
+        "tool": "run_python",
+        "input": "{\"code\": \"from pyproj import Transformer\\nimport pyproj\\nprint(pyproj.network.is_network_enabled(), pyproj.network.get_network_systems if hasattr(pyproj.network,'get_network_systems') else '')\\nfor code in [7710,5339,1314]:\\n    t=Transformer.from_pipeline(f\\\"urn:ogc:def:coordinateOperation:EPSG::{code}\\\")\\n    try:\\n        print(code, t.transform(53.7639478,-2.3376246))\\n    except Exception as e: print(code,'ERR',e)\\nt=Transformer.from_crs('EPSG:27700','EPSG:4326',always_xy=True)\\nprint(t.des"
+      },
+      {
+        "turn": 16,
+        "text": "Key finding: the OSTN02 operation (5339) returns infinity for a GB point, so it isn't usable here. The OSTN15 operation (7710) works. I'll check where its grid is coming from, then compute everything with explicit operations and cross-check each against the Helmert alternative."
+      },
+      {
+        "turn": 16,
+        "tool": "run_python",
+        "input": "{\"code\": \"import os, pyproj\\nfrom pyproj import Transformer\\nfrom pyproj.transformer import TransformerGroup\\nprint('user dir', pyproj.datadir.get_user_data_dir())\\nfor root in [pyproj.datadir.get_user_data_dir(), pyproj.datadir.get_data_dir()]:\\n    for dp,dn,fn in os.walk(root):\\n        for f in fn:\\n            if f.lower().endswith(('.tif','.gsb','.gtx')): print(os.path.join(dp,f))\\ng=TransformerGroup('EPSG:27700','EPSG:4326',always_xy=True)\\nprint('27700 default-group transformers:', len(g"
+      },
+      {
+        "turn": 17,
+        "text": "The BNG default already chooses OSTN15 (operation 9, EPSG:7710), and the grid is fetched on demand from the PROJ CDN, which I'll note. Next I'll compute all points with explicit operations and check each against the Helmert alternative and against the round trip."
+      },
+      {
+        "turn": 17,
+        "tool": "run_python",
+        "input": "{\"code\": \"import json, math\\nfrom pyproj import Transformer\\ndef geo_op(code, lat, lon):\\n    t=Transformer.from_pipeline(f\\\"urn:ogc:def:coordinateOperation:EPSG::{code}\\\")\\n    return t.transform(lat, lon)\\n# BNG -> WGS84 via 27700->4277 (inverse TM) then 7710\\nbng_to_osgb=Transformer.from_crs('EPSG:27700','EPSG:4277',always_xy=True)\\nbng=json.load(open('tasks/tfm-bng.json'))['points']\\nout={}\\nres=[]\\nfor p in bng:\\n    lon,lat=bng_to_osgb.transform(p['easting'],p['northing'])\\n    la,lo=geo_o"
+      },
+      {
+        "turn": 18,
+        "text": "Both ED50 cross-checks are consistent: the default UTM route picks a different ED50 operation (about 1 m away), so I'll use the explicit EPSG:1311 chain, which is what I'm recording. Next I'll compute the remaining sets and the reverse round trip, and write the answer files."
+      },
+      {
+        "turn": 18,
+        "tool": "run_python",
+        "input": "{\"code\": \"import json, os\\nfrom pyproj import Transformer\\nos.makedirs('answers',exist_ok=True)\\ndef op(code):\\n    return Transformer.from_pipeline(f\\\"urn:ogc:def:coordinateOperation:EPSG::{code}\\\")\\nfwd7710=op(7710); fwd1311=op(1311)\\nbng_to_osgb=Transformer.from_crs('EPSG:27700','EPSG:4277',always_xy=True)\\nutm_to_ed50=Transformer.from_crs('EPSG:23031','EPSG:4230',always_xy=True)\\nVER=\\\"v12.029\\\"; CW=\\\"pyproj 3.8.0 / PROJ 9.8.1\\\"\\ndef r6(x): return round(x,9)\\nver_ops={}\\ndef lld(i,la,lo): re"
+      },
+      {
+        "turn": 19,
+        "text": "All six transformation files are written. Last, the deprecation answer, using the replacement links from the database."
+      },
+      {
+        "turn": 19,
+        "tool": "write_file",
+        "input": "{\"path\": \"answers/dep-codes.json\", \"content\": \"{\\n  \\\"test_id\\\": \\\"dep-codes\\\",\\n  \\\"epsg_version\\\": \\\"v12.029\\\",\\n  \\\"codes\\\": [\\n    {\\\"code\\\": \\\"EPSG:20087\\\", \\\"deprecated\\\": true, \\\"replacement\\\": [\\\"EPSG:2486\\\"], \\\"reason\\\": \\\"Pulkovo 1995 / Gauss-Kruger 27N deprecated; EPSG record points to Pulkovo 1995 / Gauss-Kruger CM 159E (2486) as the replacement.\\\"},\\n    {\\\"code\\\": \\\"EPSG:10256\\\", \\\"deprecated\\\": false, \\\"replacement\\\": [], \\\"reason\\\": \\\"GS-IRF geographic 2D is current in v12.029.\\\""
+      },
+      {
+        "turn": 20,
+        "text": "All seven tasks are answered, and the answer files are in `answers/`. Every number came from pyproj 3.8.0 / PROJ 9.8.1 with EPSG v12.029.\n\n**Transformations** (six files: `tfm-bng`, `tfm-ed50-geog`, `tfm-ed50-utm31`, `tfm-osgb36-geog`, `tfm-outside-area`, `tfm-reverse-roundtrip`)\n- **GB work (BNG, OSGB36):** EPSG:7710 \"OSGB36 to WGS 84 (9)\", 1 m, the OSTN15 grid. For BNG I inverted the grid projection to OSGB36 first. This is also PROJ's default choice for BNG to WGS 84.\n- **North Sea work (ED50 geographic and ED50 / UTM 31N):** EPSG:1311 \"ED50 to WGS 84 (18)\", 1 m. It is the only ED50 to WGS 84 operation in the database whose area covers these points at 1 m accuracy. For UTM I inverted zone 31N to ED50 first.\n- **Outside-area task:** P05 (France) and P06 (east of Russia) are far outside the OSGB36 area. I gave them null results and listed them in `outside_area_of_use`, and transformed the other six.\n- **Reverse task:** I applied EPSG:7710 in reverse to get OSGB36, then forward again for the round trip. The round trip returns the original WGS 84 values to 9 decimal places.\n\n**Deprecation** (`dep-codes.json`)\n- Deprecated: 20087 (\u2192 2486), 6979 (\u2192 7135), 32662 (\u2192 32663 and 3786), 21894 (\u2192 21899).\n- Not deprecated: 10256 and 7351.\n\n**Things to be aware of**\n- **Grid files:** the OSTN15 grid is not stored in the folder. PROJ fetches it on demand, so these results depend on network access to PROJ's CDN.\n- **OSTN02 failure:** the older OSTN02 operation (EPSG:5339) returned infinity for a GB point in this environment, so I did not use it.\n- **Helmert cross-check:** the 2 m Helmert operation (EPSG:1314) agrees with the grid results to about 1e-5 degrees, roughly 1 m.\n- **Deprecation chain:** 32662's replacements (32663 and 3786) are themselves deprecated, pointing to 4087 and 4088. I listed the direct replacements and noted the chain in the reason.\n- **Deprecation reasons:** the database gives the replacements but not the reasons. The reason text I wrote is my own inference"
+      }
+    ]
+  },
+  "summary": {
+    "passed": 53,
+    "failed": 0,
+    "not_verified": 0,
+    "score": 1.0
+  },
+  "tests": [
+    {
+      "test_id": "dep-codes",
+      "title": "Spot deprecated CRS codes",
+      "gigs_ref": "7000 (deprecation)",
+      "checks": [
+        {
+          "check": "EPSG:20087 deprecated or not",
+          "result": "pass",
+          "detail": "said True; registry: deprecated (Pulkovo 1995 / Gauss-Kruger 27N)"
+        },
+        {
+          "check": "EPSG:20087 replacement",
+          "result": "pass",
+          "detail": "said ['EPSG:2486']; registry: ['EPSG:2486']"
+        },
+        {
+          "check": "EPSG:10256 deprecated or not",
+          "result": "pass",
+          "detail": "said False; registry: live (GS-IRF)"
+        },
+        {
+          "check": "EPSG:6979 deprecated or not",
+          "result": "pass",
+          "detail": "said True; registry: deprecated (IGD05)"
+        },
+        {
+          "check": "EPSG:6979 replacement",
+          "result": "pass",
+          "detail": "said ['EPSG:7135']; registry: ['EPSG:7135']"
+        },
+        {
+          "check": "EPSG:32662 deprecated or not",
+          "result": "pass",
+          "detail": "said True; registry: deprecated (WGS 84 / Plate Carree)"
+        },
+        {
+          "check": "EPSG:32662 replacement",
+          "result": "pass",
+          "detail": "said ['EPSG:32663', 'EPSG:3786']; registry: ['EPSG:32663', 'EPSG:3786']; following the chain to live records: ['EPSG:4087']"
+        },
+        {
+          "check": "EPSG:7351 deprecated or not",
+          "result": "pass",
+          "detail": "said False; registry: live (NAD83(2011) / InGCS Randolph-Wayne (m))"
+        },
+        {
+          "check": "EPSG:21894 deprecated or not",
+          "result": "pass",
+          "detail": "said True; registry: deprecated (Bogota 1975 / Colombia East)"
+        },
+        {
+          "check": "EPSG:21894 replacement",
+          "result": "pass",
+          "detail": "said ['EPSG:21899']; registry: ['EPSG:21899']"
+        }
+      ],
+      "info": {
+        "codes": [
+          {
+            "code": "EPSG:20087",
+            "name": "Pulkovo 1995 / Gauss-Kruger 27N",
+            "deprecated": true,
+            "replacement": [
+              "EPSG:2486"
+            ],
+            "agent_reason": "Pulkovo 1995 / Gauss-Kruger 27N deprecated; EPSG record points to Pulkovo 1995 / Gauss-Kruger CM 159E (2486) as the replacement."
+          },
+          {
+            "code": "EPSG:10256",
+            "name": "GS-IRF",
+            "deprecated": false,
+            "replacement": [],
+            "agent_reason": "GS-IRF geographic 2D is current in v12.029."
+          },
+          {
+            "code": "EPSG:6979",
+            "name": "IGD05",
+            "deprecated": true,
+            "replacement": [
+              "EPSG:7135"
+            ],
+            "agent_reason": "IGD05 geographic 3D deprecated; EPSG record points to IGD05 (7135) as the replacement."
+          },
+          {
+            "code": "EPSG:32662",
+            "name": "WGS 84 / Plate Carree",
+            "deprecated": true,
+            "replacement": [
+              "EPSG:32663",
+              "EPSG:3786"
+            ],
+            "agent_reason": "WGS 84 / Plate Carree deprecated; EPSG record lists WGS 84 / World Equidistant Cylindrical (32663) and World Equidistant Cylindrical (Sphere) (3786). Both of those are themselves deprecated, superseded by 4087 and 4088 respectively."
+          },
+          {
+            "code": "EPSG:7351",
+            "name": "NAD83(2011) / InGCS Randolph-Wayne (m)",
+            "deprecated": false,
+            "replacement": [],
+            "agent_reason": "NAD83(2011) / InGCS Randolph-Wayne (m) is current in v12.029."
+          },
+          {
+            "code": "EPSG:21894",
+            "name": "Bogota 1975 / Colombia East",
+            "deprecated": true,
+            "replacement": [
+              "EPSG:21899"
+            ],
+            "agent_reason": "Bogota 1975 / Colombia East deprecated; EPSG record points to Bogota 1975 / Colombia East zone (21899) as the replacement."
+          }
+        ]
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": null,
+      "agent_assumptions": null
+    },
+    {
+      "test_id": "tfm-bng",
+      "title": "British National Grid to WGS 84",
+      "gigs_ref": "5100 + 5203 (TM conversion then Position Vector)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:27700; expected EPSG:27700"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:7710; acceptable: EPSG:1314, EPSG:7710 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged none; expected none"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 4.31e-10 degree (tolerance 3e-07), computed with EPSG:7710"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "7710"
+            ],
+            "name": "Inverse of British National Grid + OSGB36 to WGS 84 (9) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          },
+          {
+            "codes": [
+              "1314"
+            ],
+            "name": "Inverse of British National Grid + OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
+            "accuracy_m": 2.0,
+            "available": true
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "7710"
+          ],
+          "accuracy_m": 1.0
+        },
+        "expected_outside": []
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "Default PROJ 27700->4326 chooses the same operation (9); OSTN02 op 5339 returned inf in this environment so was not used. Helmert 1314 differs by about 1e-5 deg (~1 m).",
+      "agent_assumptions": "Input eastings/northings are British National Grid (EPSG:27700); inverse Transverse Mercator to OSGB36 (EPSG:4277) then EPSG:7710. Grid fetched from PROJ CDN on demand."
+    },
+    {
+      "test_id": "tfm-ed50-geog",
+      "title": "ED50 North Sea positions to WGS 84",
+      "gigs_ref": "5203-style (ED50 to WGS 84, North Sea)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4230; expected EPSG:4230"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:1311; acceptable: EPSG:1311 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged none; expected none"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 4.44e-10 degree (tolerance 3e-07), computed with EPSG:1311"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "1311"
+            ],
+            "name": "ED50 to WGS 84 (18) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "1311"
+          ],
+          "accuracy_m": 1.0
+        },
+        "expected_outside": []
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "A UK-specific ED50 North Sea operation was not in this database; ED50 to WGS 84 (18) used. PROJ default for 4230->4326 would use a different (lower accuracy) operation; not used.",
+      "agent_assumptions": "Input is ED50 geographic (EPSG:4230), lat/lon order."
+    },
+    {
+      "test_id": "tfm-ed50-utm31",
+      "title": "ED50 / UTM zone 31N to WGS 84",
+      "gigs_ref": "5100 + 5203-style (UTM conversion then ED50 to WGS 84)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:23031; expected EPSG:23031"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:1311; acceptable: EPSG:1311 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged none; expected none"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 4.86e-10 degree (tolerance 3e-07), computed with EPSG:1311"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "1311"
+            ],
+            "name": "Inverse of UTM zone 31N + ED50 to WGS 84 (18) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "1311"
+          ],
+          "accuracy_m": 1.0
+        },
+        "expected_outside": []
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "PROJ default for 23031->4326 picks ED50 to WGS 84 (1) (about 1 m different); EPSG:1311 chosen deliberately for North Sea accuracy.",
+      "agent_assumptions": "Inverse UTM zone 31N on ED50 (EPSG:23031 to EPSG:4230), then EPSG:1311."
+    },
+    {
+      "test_id": "tfm-osgb36-geog",
+      "title": "OSGB36 latitude/longitude to WGS 84",
+      "gigs_ref": "5203 (Position Vector, OSGB36 to WGS 84)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4277; expected EPSG:4277"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:7710; acceptable: EPSG:1314, EPSG:7710 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged none; expected none"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 5.00e-10 degree (tolerance 3e-07), computed with EPSG:7710"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "7710"
+            ],
+            "name": "OSGB36 to WGS 84 (9) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          },
+          {
+            "codes": [
+              "1314"
+            ],
+            "name": "OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
+            "accuracy_m": 2.0,
+            "available": true
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "7710"
+          ],
+          "accuracy_m": 1.0
+        },
+        "expected_outside": []
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "Helmert alternative 1314 (2 m) differs by about 1e-5 deg (~1 m) at these points. Grid fetched from PROJ CDN on demand.",
+      "agent_assumptions": "Input is OSGB36 geographic (EPSG:4277), lat/lon order; all points within the GB area."
+    },
+    {
+      "test_id": "tfm-outside-area",
+      "title": "OSGB36 to WGS 84 with stray points",
+      "gigs_ref": "5203 (points outside the area of use)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4277; expected EPSG:4277"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:7710; acceptable: EPSG:1314, EPSG:7710 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged ['P05', 'P06']; expected ['P05', 'P06']"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 3.99e-10 degree (tolerance 3e-07), computed with EPSG:7710"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "7710"
+            ],
+            "name": "OSGB36 to WGS 84 (9) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          },
+          {
+            "codes": [
+              "1314"
+            ],
+            "name": "OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
+            "accuracy_m": 2.0,
+            "available": true
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "7710"
+          ],
+          "accuracy_m": 1.0
+        },
+        "expected_outside": [
+          "P05",
+          "P06"
+        ]
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "Left P05 and P06 as null rather than transforming them with an invalid operation. The other six points were transformed.",
+      "agent_assumptions": "P05 (47.16N, 2.05E, France) and P06 (56.28N, 120.99E, Siberia/Russia region) lie far outside the OSGB36 area of use; not transformed."
+    },
+    {
+      "test_id": "tfm-reverse-roundtrip",
+      "title": "WGS 84 to OSGB36, with a round trip",
+      "gigs_ref": "5203 (reverse direction and round trip)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4277; expected EPSG:4277"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:7710; acceptable: EPSG:1314, EPSG:7710 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged none; expected none"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 4.77e-10 degree (tolerance 3e-07), computed with EPSG:7710"
+        },
+        {
+          "check": "round trip within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 0.00e+00 (tolerance 6e-08)"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "7710"
+            ],
+            "name": "Inverse of OSGB36 to WGS 84 (9) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          },
+          {
+            "codes": [
+              "1314"
+            ],
+            "name": "Inverse of OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
+            "accuracy_m": 2.0,
+            "available": true
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "7710"
+          ],
+          "accuracy_m": 1.0
+        },
+        "expected_outside": []
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "Round trip returns to inputs within rounding (see round_trip values).",
+      "agent_assumptions": "Input is WGS 84 lat/lon (EPSG:4326). Results are OSGB36 geographic (EPSG:4277) lat/lon. Round trip applies the forward operation to the results."
+    }
+  ]
+}

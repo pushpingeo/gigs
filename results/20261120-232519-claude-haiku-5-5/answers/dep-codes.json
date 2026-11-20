@@ -1,0 +1,12 @@
+{
+  "test_id": "dep-codes",
+  "epsg_version": "v12.029",
+  "codes": [
+    {"code": "EPSG:20087", "deprecated": true, "replacement": ["EPSG:2486"], "reason": "Pulkovo 1995 / Gauss-Kruger 27N deprecated; EPSG record points to Pulkovo 1995 / Gauss-Kruger CM 159E (2486) as the replacement."},
+    {"code": "EPSG:10256", "deprecated": false, "replacement": [], "reason": "GS-IRF geographic 2D is current in v12.029."},
+    {"code": "EPSG:6979", "deprecated": true, "replacement": ["EPSG:7135"], "reason": "IGD05 geographic 3D deprecated; EPSG record points to IGD05 (7135) as the replacement."},
+    {"code": "EPSG:32662", "deprecated": true, "replacement": ["EPSG:32663", "EPSG:3786"], "reason": "WGS 84 / Plate Carree deprecated; EPSG record lists WGS 84 / World Equidistant Cylindrical (32663) and World Equidistant Cylindrical (Sphere) (3786). Both of those are themselves deprecated, superseded by 4087 and 4088 respectively."},
+    {"code": "EPSG:7351", "deprecated": false, "replacement": [], "reason": "NAD83(2011) / InGCS Randolph-Wayne (m) is current in v12.029."},
+    {"code": "EPSG:21894", "deprecated": true, "replacement": ["EPSG:21899"], "reason": "Bogota 1975 / Colombia East deprecated; EPSG record points to Bogota 1975 / Colombia East zone (21899) as the replacement."}
+  ]
+}

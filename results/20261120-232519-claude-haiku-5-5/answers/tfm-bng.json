@@ -1,0 +1,60 @@
+{
+  "test_id": "tfm-bng",
+  "source_crs": "EPSG:27700",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:7710",
+    "name": "OSGB36 to WGS 84 (9)",
+    "accuracy_m": 1,
+    "why": "OSTN15-based NTv2 transformation (1 m) covering Britain and UKCS; default PROJ choice for BNG to WGS 84; BNG inverted to OSGB36 geographic first"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 57.266869434,
+      "lon": -5.007955378
+    },
+    {
+      "id": "P02",
+      "lat": 52.132794056,
+      "lon": -3.52514278
+    },
+    {
+      "id": "P03",
+      "lat": 54.070002592,
+      "lon": -2.067478588
+    },
+    {
+      "id": "P04",
+      "lat": 52.515457199,
+      "lon": -1.993157352
+    },
+    {
+      "id": "P05",
+      "lat": 53.642469614,
+      "lon": -1.533317636
+    },
+    {
+      "id": "P06",
+      "lat": 53.991565893,
+      "lon": -2.368524204
+    },
+    {
+      "id": "P07",
+      "lat": 52.036247638,
+      "lon": -3.744660698
+    },
+    {
+      "id": "P08",
+      "lat": 54.074906031,
+      "lon": -2.338752729
+    }
+  ],
+  "outside_area_of_use": [],
+  "round_trip": [],
+  "assumptions": "Input eastings/northings are British National Grid (EPSG:27700); inverse Transverse Mercator to OSGB36 (EPSG:4277) then EPSG:7710. Grid fetched from PROJ CDN on demand.",
+  "notes": "Default PROJ 27700->4326 chooses the same operation (9); OSTN02 op 5339 returned inf in this environment so was not used. Helmert 1314 differs by about 1e-5 deg (~1 m)."
+}
