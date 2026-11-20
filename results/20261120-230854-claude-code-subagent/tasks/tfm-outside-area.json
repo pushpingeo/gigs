@@ -1,0 +1,48 @@
+{
+  "test_id": "tfm-outside-area",
+  "title": "OSGB36 to WGS 84 with stray points",
+  "task": "A spreadsheet of OSGB36 latitude and longitude positions needs converting to WGS 84. Transform the points and record how. Some rows may not belong; deal with them as you see fit and say what you did.",
+  "answer_format": "transformation",
+  "points": [
+    {
+      "id": "P01",
+      "lat": 56.0294322,
+      "lon": -3.7409628
+    },
+    {
+      "id": "P02",
+      "lat": 47.3604758,
+      "lon": 2.9633828
+    },
+    {
+      "id": "P03",
+      "lat": 55.862741,
+      "lon": -4.2992738
+    },
+    {
+      "id": "P04",
+      "lat": 52.4052119,
+      "lon": -1.419307
+    },
+    {
+      "id": "P05",
+      "lat": 52.2268112,
+      "lon": -3.6315033
+    },
+    {
+      "id": "P06",
+      "lat": 52.052726,
+      "lon": -3.7308417
+    },
+    {
+      "id": "P07",
+      "lat": 64.4531059,
+      "lon": 124.2676131
+    },
+    {
+      "id": "P08",
+      "lat": 57.5371126,
+      "lon": -4.3425065
+    }
+  ]
+}

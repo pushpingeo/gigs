@@ -1,0 +1,49 @@
+{
+  "test_id": "tfm-ed50-utm31",
+  "source_crs": "EPSG:23031",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1311",
+    "name": "ED50 to WGS 84 (18)",
+    "accuracy_m": 1,
+    "why": "Best stated accuracy (1 m) for the UK North Sea; area 'Europe - common offshore' contains all points. Inverse UTM 31N (conversion) then EPSG:1311."
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 57.058007762,
+      "lon": 1.263893981
+    },
+    {
+      "id": "P02",
+      "lat": 57.513333305,
+      "lon": 1.147978564
+    },
+    {
+      "id": "P03",
+      "lat": 58.471818088,
+      "lon": 1.110720669
+    },
+    {
+      "id": "P04",
+      "lat": 57.705894321,
+      "lon": 1.269749218
+    },
+    {
+      "id": "P05",
+      "lat": 56.719015702,
+      "lon": 1.1618121
+    },
+    {
+      "id": "P06",
+      "lat": 56.719510275,
+      "lon": 1.166514403
+    }
+  ],
+  "outside_area_of_use": [],
+  "assumptions": "Read as EPSG:23031 ED50 / UTM zone 31N, metres, easting first, full (untruncated) eastings.",
+  "notes": "Points fall at about 1.1-1.3E, west of the UK/Norway median line, so the UK-applicable 1311 is used rather than Norway's 1613. Round trip to UTM checked internally within about 0.001 m (GIGS tolerance 0.006 m)."
+}

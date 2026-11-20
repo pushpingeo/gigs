@@ -1,0 +1,38 @@
+{
+  "test_id": "tfm-reverse-roundtrip",
+  "title": "WGS 84 to OSGB36, with a round trip",
+  "task": "These GPS positions are WGS 84 latitude and longitude. Give them as OSGB36 latitude and longitude, then transform your OSGB36 results back to WGS 84 as a round-trip check and report those too.",
+  "answer_format": "transformation",
+  "points": [
+    {
+      "id": "P01",
+      "lat": 51.2695357,
+      "lon": -0.5233829
+    },
+    {
+      "id": "P02",
+      "lat": 55.8801872,
+      "lon": -3.9627546
+    },
+    {
+      "id": "P03",
+      "lat": 57.4671471,
+      "lon": -4.365827
+    },
+    {
+      "id": "P04",
+      "lat": 52.3508719,
+      "lon": -1.3035355
+    },
+    {
+      "id": "P05",
+      "lat": 57.0542451,
+      "lon": -4.9380743
+    },
+    {
+      "id": "P06",
+      "lat": 54.1666589,
+      "lon": -2.4479075
+    }
+  ]
+}

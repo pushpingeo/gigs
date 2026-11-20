@@ -1,0 +1,48 @@
+{
+  "test_id": "tfm-bng",
+  "title": "British National Grid to WGS 84",
+  "task": "These are British National Grid eastings and northings in metres. Give the points as WGS 84 latitude and longitude, and record how you did it.",
+  "answer_format": "transformation",
+  "points": [
+    {
+      "id": "P01",
+      "easting": 282123.19,
+      "northing": 252274.55
+    },
+    {
+      "id": "P02",
+      "easting": 541020.03,
+      "northing": 189988.68
+    },
+    {
+      "id": "P03",
+      "easting": 402342.99,
+      "northing": 267540.3
+    },
+    {
+      "id": "P04",
+      "easting": 288839.42,
+      "northing": 216096.07
+    },
+    {
+      "id": "P05",
+      "easting": 266228.47,
+      "northing": 666993.16
+    },
+    {
+      "id": "P06",
+      "easting": 422034.69,
+      "northing": 443697.49
+    },
+    {
+      "id": "P07",
+      "easting": 294471.68,
+      "northing": 235547.88
+    },
+    {
+      "id": "P08",
+      "easting": 412133.63,
+      "northing": 275478.48
+    }
+  ]
+}

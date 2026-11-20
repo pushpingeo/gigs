@@ -1,0 +1,16 @@
+{
+  "test_id": "dep-codes",
+  "epsg_version": "v12.029",
+  "codes": [
+    {"code": "EPSG:20075", "deprecated": true, "replacement": ["EPSG:2474"],
+     "reason": "Pulkovo 1995 / Gauss-Kruger 15N duplicated Pulkovo 1995 / Gauss-Kruger CM 87E (identical definition, 500 km false easting with no zone prefix, so the 'zone N' name was misleading); replaced by the CM-named CRS."},
+    {"code": "EPSG:20931", "deprecated": false, "replacement": [], "reason": "Not deprecated: GSK-2011 / Gauss-Kruger zone 31 is a live record."},
+    {"code": "EPSG:21481", "deprecated": true, "replacement": ["EPSG:21461"],
+     "reason": "Beijing 1954 / Gauss-Kruger 21N duplicated Beijing 1954 / Gauss-Kruger CM 123E (identical definition, false easting without zone prefix, so the zone-number name was misleading); replaced by the CM-named CRS."},
+    {"code": "EPSG:3752", "deprecated": true, "replacement": ["EPSG:3994"],
+     "reason": "WGS 84 / Mercator 41 was defined with the wrong method: Mercator (variant A) with latitude of natural origin -41; corrected as Mercator (variant B) with standard parallel at 41 S in EPSG:3994."},
+    {"code": "EPSG:7843", "deprecated": false, "replacement": [], "reason": "Not deprecated: GDA2020 geographic 3D CRS is live."},
+    {"code": "EPSG:4088", "deprecated": true, "replacement": ["EPSG:4087"],
+     "reason": "World Equidistant Cylindrical (Sphere) used the spherical method on the GRS 1980 authalic sphere with an unspecified datum; replaced by WGS 84 / World Equidistant Cylindrical, which uses the ellipsoidal method on WGS 84."}
+  ]
+}

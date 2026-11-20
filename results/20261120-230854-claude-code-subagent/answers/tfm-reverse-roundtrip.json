@@ -1,0 +1,81 @@
+{
+  "test_id": "tfm-reverse-roundtrip",
+  "source_crs": "EPSG:4326",
+  "target_crs": "EPSG:4277",
+  "operation": {
+    "code": "EPSG:1314",
+    "name": "OSGB36 to WGS 84 (6)",
+    "accuracy_m": 2,
+    "why": "OSTN15 grid (EPSG:7710, 1 m) not available offline (no grid file, no network), so used the best applicable one: EPSG:1314 applied in reverse, 2 m, area contains all points; same operation used back for the round trip."
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 51.269004001,
+      "lon": -0.521830943
+    },
+    {
+      "id": "P02",
+      "lat": 55.880246659,
+      "lon": -3.961432293
+    },
+    {
+      "id": "P03",
+      "lat": 57.467401825,
+      "lon": -4.36449087
+    },
+    {
+      "id": "P04",
+      "lat": 52.350477692,
+      "lon": -1.302030325
+    },
+    {
+      "id": "P05",
+      "lat": 57.05445724,
+      "lon": -4.936831912
+    },
+    {
+      "id": "P06",
+      "lat": 54.166494465,
+      "lon": -2.446465408
+    }
+  ],
+  "outside_area_of_use": [],
+  "round_trip": [
+    {
+      "id": "P01",
+      "lat": 51.269535695,
+      "lon": -0.523382888
+    },
+    {
+      "id": "P02",
+      "lat": 55.8801872,
+      "lon": -3.962754588
+    },
+    {
+      "id": "P03",
+      "lat": 57.467147101,
+      "lon": -4.365826988
+    },
+    {
+      "id": "P04",
+      "lat": 52.350871896,
+      "lon": -1.303535488
+    },
+    {
+      "id": "P05",
+      "lat": 57.054245101,
+      "lon": -4.938074289
+    },
+    {
+      "id": "P06",
+      "lat": 54.166658898,
+      "lon": -2.447907487
+    }
+  ],
+  "assumptions": "GPS positions read as WGS 84 (EPSG:4326) decimal degrees, latitude first, west negative.",
+  "notes": "Round trip WGS 84 -> OSGB36 -> WGS 84 with the same operation (EPSG:1314) returns inputs within 2e-8 deg (GIGS tolerance 6e-8)."
+}

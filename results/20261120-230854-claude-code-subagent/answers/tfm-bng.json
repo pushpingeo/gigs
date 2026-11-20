@@ -1,0 +1,59 @@
+{
+  "test_id": "tfm-bng",
+  "source_crs": "EPSG:27700",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1314",
+    "name": "OSGB36 to WGS 84 (6)",
+    "accuracy_m": 2,
+    "why": "OSTN15 grid (EPSG:7710, 1 m) not available offline (no grid file, no network), so used the best applicable one: EPSG:1314, 2 m, area GB onshore and nearshore contains all points."
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 52.156125574,
+      "lon": -3.724486092
+    },
+    {
+      "id": "P02",
+      "lat": 51.591106706,
+      "lon": 0.034319288
+    },
+    {
+      "id": "P03",
+      "lat": 52.305975191,
+      "lon": -1.967058939
+    },
+    {
+      "id": "P04",
+      "lat": 51.832380254,
+      "lon": -3.614612389
+    },
+    {
+      "id": "P05",
+      "lat": 55.877463754,
+      "lon": -4.139814462
+    },
+    {
+      "id": "P06",
+      "lat": 53.888996522,
+      "lon": -1.66623239
+    },
+    {
+      "id": "P07",
+      "lat": 52.008298575,
+      "lon": -3.538875565
+    },
+    {
+      "id": "P08",
+      "lat": 52.377213442,
+      "lon": -1.823182898
+    }
+  ],
+  "outside_area_of_use": [],
+  "assumptions": "Eastings/northings read as EPSG:27700 OSGB36 / British National Grid, metres, easting first. Inverse BNG projection (conversion) then EPSG:1314.",
+  "notes": "Round trip back to BNG checked internally: within about 0.001 m (GIGS tolerance 0.006 m). Datum shifts 70-125 m range plausible."
+}

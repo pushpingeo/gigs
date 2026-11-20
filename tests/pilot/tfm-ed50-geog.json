@@ -1,0 +1,30 @@
+{
+  "id": "tfm-ed50-geog",
+  "series": "transformation",
+  "gigs_ref": "5203-style (ED50 to WGS 84, North Sea)",
+  "title": "ED50 North Sea positions to WGS 84",
+  "task": "These are well positions in the UK North Sea, given as ED50 latitude and longitude. Give them in WGS 84 latitude and longitude, and record how you did it.",
+  "expect": {
+    "source_crs": [
+      "4230"
+    ],
+    "target_crs": [
+      "4326",
+      "CRS84"
+    ]
+  },
+  "generate": {
+    "kind": "geographic",
+    "crs": "EPSG:4230",
+    "boxes": [
+      [
+        -1.0,
+        56.5,
+        1.2,
+        59.8
+      ]
+    ],
+    "n": 6
+  },
+  "answer": "transformation"
+}

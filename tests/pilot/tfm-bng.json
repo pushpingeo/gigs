@@ -1,0 +1,60 @@
+{
+  "id": "tfm-bng",
+  "series": "transformation",
+  "gigs_ref": "5100 + 5203 (TM conversion then Position Vector)",
+  "title": "British National Grid to WGS 84",
+  "task": "These are British National Grid eastings and northings in metres. Give the points as WGS 84 latitude and longitude, and record how you did it.",
+  "expect": {
+    "source_crs": [
+      "27700"
+    ],
+    "target_crs": [
+      "4326",
+      "CRS84"
+    ]
+  },
+  "generate": {
+    "kind": "projected",
+    "crs": "EPSG:27700",
+    "boxes": [
+      [
+        -4.3,
+        55.8,
+        -3.2,
+        56.1
+      ],
+      [
+        -5.2,
+        57.0,
+        -4.0,
+        57.6
+      ],
+      [
+        -2.6,
+        53.6,
+        -1.5,
+        54.2
+      ],
+      [
+        -2.2,
+        52.3,
+        -1.2,
+        52.8
+      ],
+      [
+        -4.0,
+        51.8,
+        -3.3,
+        52.3
+      ],
+      [
+        -0.8,
+        51.2,
+        0.3,
+        51.6
+      ]
+    ],
+    "n": 8
+  },
+  "answer": "transformation"
+}

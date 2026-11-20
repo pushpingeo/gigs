@@ -1,0 +1,60 @@
+{
+  "id": "tfm-osgb36-geog",
+  "series": "transformation",
+  "gigs_ref": "5203 (Position Vector, OSGB36 to WGS 84)",
+  "title": "OSGB36 latitude/longitude to WGS 84",
+  "task": "These points are latitude and longitude on OSGB36, from an old survey of sites across Great Britain. Give them in WGS 84 latitude and longitude, and record how you did it.",
+  "expect": {
+    "source_crs": [
+      "4277"
+    ],
+    "target_crs": [
+      "4326",
+      "CRS84"
+    ]
+  },
+  "generate": {
+    "kind": "geographic",
+    "crs": "EPSG:4277",
+    "boxes": [
+      [
+        -4.3,
+        55.8,
+        -3.2,
+        56.1
+      ],
+      [
+        -5.2,
+        57.0,
+        -4.0,
+        57.6
+      ],
+      [
+        -2.6,
+        53.6,
+        -1.5,
+        54.2
+      ],
+      [
+        -2.2,
+        52.3,
+        -1.2,
+        52.8
+      ],
+      [
+        -4.0,
+        51.8,
+        -3.3,
+        52.3
+      ],
+      [
+        -0.8,
+        51.2,
+        0.3,
+        51.6
+      ]
+    ],
+    "n": 8
+  },
+  "answer": "transformation"
+}

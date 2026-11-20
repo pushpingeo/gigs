@@ -1,0 +1,62 @@
+{
+  "test_id": "tfm-outside-area",
+  "source_crs": "EPSG:4277",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1314",
+    "name": "OSGB36 to WGS 84 (6)",
+    "accuracy_m": 2,
+    "why": "OSTN15 grid (EPSG:7710, 1 m) not available offline (no grid file, no network), so used the best applicable one: EPSG:1314, 2 m, area GB onshore and nearshore contains the valid points."
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 56.029357793,
+      "lon": -3.742319602
+    },
+    {
+      "id": "P02",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "P03",
+      "lat": 55.862679353,
+      "lon": -4.300551985
+    },
+    {
+      "id": "P04",
+      "lat": 52.40559797,
+      "lon": -1.420800655
+    },
+    {
+      "id": "P05",
+      "lat": 52.22718769,
+      "lon": -3.632731295
+    },
+    {
+      "id": "P06",
+      "lat": 52.053121587,
+      "lon": -3.732052274
+    },
+    {
+      "id": "P07",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "P08",
+      "lat": 57.536849772,
+      "lon": -4.343848613
+    }
+  ],
+  "outside_area_of_use": [
+    "P02",
+    "P07"
+  ],
+  "assumptions": "Read as OSGB36 (EPSG:4277) decimal degrees, latitude first, west negative.",
+  "notes": "P02 (47.36N, 2.96E, central France) and P07 (64.45N, 124.27E, eastern Siberia) lie outside the area of use of OSGB36 and of EPSG:1314; swapping lat/lon does not bring either into Great Britain, so they look like rows that don't belong. Not transformed (null values); would only transform them on the owner's say-so, marked as outside."
+}

@@ -1,0 +1,59 @@
+{
+  "test_id": "tfm-osgb36-geog",
+  "source_crs": "EPSG:4277",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1314",
+    "name": "OSGB36 to WGS 84 (6)",
+    "accuracy_m": 2,
+    "why": "OSTN15 grid (EPSG:7710, 1 m) not available offline (no grid file, no network), so used the best applicable one: EPSG:1314, 2 m, area GB onshore and nearshore contains all points."
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 52.080748922,
+      "lon": -3.759044423
+    },
+    {
+      "id": "P02",
+      "lat": 51.541867226,
+      "lon": -0.713350292
+    },
+    {
+      "id": "P03",
+      "lat": 52.594253631,
+      "lon": -2.059238078
+    },
+    {
+      "id": "P04",
+      "lat": 53.611319785,
+      "lon": -2.195247515
+    },
+    {
+      "id": "P05",
+      "lat": 52.228082686,
+      "lon": -3.538047942
+    },
+    {
+      "id": "P06",
+      "lat": 57.392239947,
+      "lon": -4.17219909
+    },
+    {
+      "id": "P07",
+      "lat": 57.365902684,
+      "lon": -4.998017026
+    },
+    {
+      "id": "P08",
+      "lat": 53.895085795,
+      "lon": -2.082487183
+    }
+  ],
+  "outside_area_of_use": [],
+  "assumptions": "Read as OSGB36 (EPSG:4277) decimal degrees, latitude first, west negative.",
+  "notes": "Round trip checked internally within 2e-8 deg (GIGS tolerance 6e-8)."
+}

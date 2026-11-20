@@ -1,0 +1,48 @@
+{
+  "test_id": "tfm-osgb36-geog",
+  "title": "OSGB36 latitude/longitude to WGS 84",
+  "task": "These points are latitude and longitude on OSGB36, from an old survey of sites across Great Britain. Give them in WGS 84 latitude and longitude, and record how you did it.",
+  "answer_format": "transformation",
+  "points": [
+    {
+      "id": "P01",
+      "lat": 52.0803569,
+      "lon": -3.7578361
+    },
+    {
+      "id": "P02",
+      "lat": 51.54137,
+      "lon": -0.7118092
+    },
+    {
+      "id": "P03",
+      "lat": 52.5938989,
+      "lon": -2.0578119
+    },
+    {
+      "id": "P04",
+      "lat": 53.6110863,
+      "lon": -2.1937974
+    },
+    {
+      "id": "P05",
+      "lat": 52.2277051,
+      "lon": -3.5368088
+    },
+    {
+      "id": "P06",
+      "lat": 57.3924832,
+      "lon": -4.1708403
+    },
+    {
+      "id": "P07",
+      "lat": 57.366153,
+      "lon": -4.99677
+    },
+    {
+      "id": "P08",
+      "lat": 53.8948841,
+      "lon": -2.0810118
+    }
+  ]
+}

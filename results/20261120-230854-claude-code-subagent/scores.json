@@ -1,0 +1,570 @@
+{
+  "run": {
+    "seed": 210756892,
+    "series": "pilot",
+    "skills": true,
+    "created": "2026-11-20T23:08:54+00:00",
+    "grader_registry": "v12.029 (2025-10-02)",
+    "grader_engine": "pyproj 3.8.0 / PROJ 9.8.1",
+    "tests": [
+      "dep-codes",
+      "tfm-bng",
+      "tfm-ed50-geog",
+      "tfm-ed50-utm31",
+      "tfm-osgb36-geog",
+      "tfm-outside-area",
+      "tfm-reverse-roundtrip"
+    ]
+  },
+  "agent": {
+    "agent": "Claude Code subagent (general-purpose), working in a copy of the packet",
+    "model": "claude-opus-5-5",
+    "skills": true
+  },
+  "summary": {
+    "passed": 53,
+    "failed": 0,
+    "not_verified": 0,
+    "score": 1.0
+  },
+  "tests": [
+    {
+      "test_id": "dep-codes",
+      "title": "Spot deprecated CRS codes",
+      "gigs_ref": "7000 (deprecation)",
+      "checks": [
+        {
+          "check": "EPSG:20075 deprecated or not",
+          "result": "pass",
+          "detail": "said True; registry: deprecated (Pulkovo 1995 / Gauss-Kruger 15N)"
+        },
+        {
+          "check": "EPSG:20075 replacement",
+          "result": "pass",
+          "detail": "said ['EPSG:2474']; registry: ['EPSG:2474']"
+        },
+        {
+          "check": "EPSG:20931 deprecated or not",
+          "result": "pass",
+          "detail": "said False; registry: live (GSK-2011 / Gauss-Kruger zone 31)"
+        },
+        {
+          "check": "EPSG:21481 deprecated or not",
+          "result": "pass",
+          "detail": "said True; registry: deprecated (Beijing 1954 / Gauss-Kruger 21N)"
+        },
+        {
+          "check": "EPSG:21481 replacement",
+          "result": "pass",
+          "detail": "said ['EPSG:21461']; registry: ['EPSG:21461']"
+        },
+        {
+          "check": "EPSG:3752 deprecated or not",
+          "result": "pass",
+          "detail": "said True; registry: deprecated (WGS 84 / Mercator 41)"
+        },
+        {
+          "check": "EPSG:3752 replacement",
+          "result": "pass",
+          "detail": "said ['EPSG:3994']; registry: ['EPSG:3994']"
+        },
+        {
+          "check": "EPSG:7843 deprecated or not",
+          "result": "pass",
+          "detail": "said False; registry: live (GDA2020)"
+        },
+        {
+          "check": "EPSG:4088 deprecated or not",
+          "result": "pass",
+          "detail": "said True; registry: deprecated (World Equidistant Cylindrical (Sphere))"
+        },
+        {
+          "check": "EPSG:4088 replacement",
+          "result": "pass",
+          "detail": "said ['EPSG:4087']; registry: ['EPSG:4087']"
+        }
+      ],
+      "info": {
+        "codes": [
+          {
+            "code": "EPSG:20075",
+            "name": "Pulkovo 1995 / Gauss-Kruger 15N",
+            "deprecated": true,
+            "replacement": [
+              "EPSG:2474"
+            ],
+            "agent_reason": "Pulkovo 1995 / Gauss-Kruger 15N duplicated Pulkovo 1995 / Gauss-Kruger CM 87E (identical definition, 500 km false easting with no zone prefix, so the 'zone N' name was misleading); replaced by the CM-named CRS."
+          },
+          {
+            "code": "EPSG:20931",
+            "name": "GSK-2011 / Gauss-Kruger zone 31",
+            "deprecated": false,
+            "replacement": [],
+            "agent_reason": "Not deprecated: GSK-2011 / Gauss-Kruger zone 31 is a live record."
+          },
+          {
+            "code": "EPSG:21481",
+            "name": "Beijing 1954 / Gauss-Kruger 21N",
+            "deprecated": true,
+            "replacement": [
+              "EPSG:21461"
+            ],
+            "agent_reason": "Beijing 1954 / Gauss-Kruger 21N duplicated Beijing 1954 / Gauss-Kruger CM 123E (identical definition, false easting without zone prefix, so the zone-number name was misleading); replaced by the CM-named CRS."
+          },
+          {
+            "code": "EPSG:3752",
+            "name": "WGS 84 / Mercator 41",
+            "deprecated": true,
+            "replacement": [
+              "EPSG:3994"
+            ],
+            "agent_reason": "WGS 84 / Mercator 41 was defined with the wrong method: Mercator (variant A) with latitude of natural origin -41; corrected as Mercator (variant B) with standard parallel at 41 S in EPSG:3994."
+          },
+          {
+            "code": "EPSG:7843",
+            "name": "GDA2020",
+            "deprecated": false,
+            "replacement": [],
+            "agent_reason": "Not deprecated: GDA2020 geographic 3D CRS is live."
+          },
+          {
+            "code": "EPSG:4088",
+            "name": "World Equidistant Cylindrical (Sphere)",
+            "deprecated": true,
+            "replacement": [
+              "EPSG:4087"
+            ],
+            "agent_reason": "World Equidistant Cylindrical (Sphere) used the spherical method on the GRS 1980 authalic sphere with an unspecified datum; replaced by WGS 84 / World Equidistant Cylindrical, which uses the ellipsoidal method on WGS 84."
+          }
+        ]
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": null,
+      "agent_assumptions": null
+    },
+    {
+      "test_id": "tfm-bng",
+      "title": "British National Grid to WGS 84",
+      "gigs_ref": "5100 + 5203 (TM conversion then Position Vector)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:27700; expected EPSG:27700"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:1314; acceptable: EPSG:1314, EPSG:7710 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged none; expected none"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 4.94e-10 degree (tolerance 3e-07), computed with EPSG:1314"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "1314"
+            ],
+            "name": "Inverse of British National Grid + OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
+            "accuracy_m": 2.0,
+            "available": true
+          },
+          {
+            "codes": [
+              "7710"
+            ],
+            "name": "Inverse of British National Grid + OSGB36 to WGS 84 (9)",
+            "accuracy_m": 1.0,
+            "available": false
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "1314"
+          ],
+          "accuracy_m": 2.0
+        },
+        "expected_outside": []
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "Round trip back to BNG checked internally: within about 0.001 m (GIGS tolerance 0.006 m). Datum shifts 70-125 m range plausible.",
+      "agent_assumptions": "Eastings/northings read as EPSG:27700 OSGB36 / British National Grid, metres, easting first. Inverse BNG projection (conversion) then EPSG:1314."
+    },
+    {
+      "test_id": "tfm-ed50-geog",
+      "title": "ED50 North Sea positions to WGS 84",
+      "gigs_ref": "5203-style (ED50 to WGS 84, North Sea)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4230; expected EPSG:4230"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:1311; acceptable: EPSG:1311 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged none; expected none"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 4.98e-10 degree (tolerance 3e-07), computed with EPSG:1311"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "1311"
+            ],
+            "name": "ED50 to WGS 84 (18) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "1311"
+          ],
+          "accuracy_m": 1.0
+        },
+        "expected_outside": []
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "Datum shifts in the expected 110-125 m range; round trip checked internally.",
+      "agent_assumptions": "Read as ED50 (EPSG:4230) decimal degrees, latitude first, west negative; all points in the UK sector offshore."
+    },
+    {
+      "test_id": "tfm-ed50-utm31",
+      "title": "ED50 / UTM zone 31N to WGS 84",
+      "gigs_ref": "5100 + 5203-style (UTM conversion then ED50 to WGS 84)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:23031; expected EPSG:23031"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:1311; acceptable: EPSG:1311 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged none; expected none"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 4.93e-10 degree (tolerance 3e-07), computed with EPSG:1311"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "1311"
+            ],
+            "name": "Inverse of UTM zone 31N + ED50 to WGS 84 (18) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "1311"
+          ],
+          "accuracy_m": 1.0
+        },
+        "expected_outside": []
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "Points fall at about 1.1-1.3E, west of the UK/Norway median line, so the UK-applicable 1311 is used rather than Norway's 1613. Round trip to UTM checked internally within about 0.001 m (GIGS tolerance 0.006 m).",
+      "agent_assumptions": "Read as EPSG:23031 ED50 / UTM zone 31N, metres, easting first, full (untruncated) eastings."
+    },
+    {
+      "test_id": "tfm-osgb36-geog",
+      "title": "OSGB36 latitude/longitude to WGS 84",
+      "gigs_ref": "5203 (Position Vector, OSGB36 to WGS 84)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4277; expected EPSG:4277"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:1314; acceptable: EPSG:1314, EPSG:7710 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged none; expected none"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 4.63e-10 degree (tolerance 3e-07), computed with EPSG:1314"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "1314"
+            ],
+            "name": "OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
+            "accuracy_m": 2.0,
+            "available": true
+          },
+          {
+            "codes": [
+              "7710"
+            ],
+            "name": "OSGB36 to WGS 84 (9)",
+            "accuracy_m": 1.0,
+            "available": false
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "1314"
+          ],
+          "accuracy_m": 2.0
+        },
+        "expected_outside": []
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "Round trip checked internally within 2e-8 deg (GIGS tolerance 6e-8).",
+      "agent_assumptions": "Read as OSGB36 (EPSG:4277) decimal degrees, latitude first, west negative."
+    },
+    {
+      "test_id": "tfm-outside-area",
+      "title": "OSGB36 to WGS 84 with stray points",
+      "gigs_ref": "5203 (points outside the area of use)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4277; expected EPSG:4277"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:1314; acceptable: EPSG:1314, EPSG:7710 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged ['P02', 'P07']; expected ['P02', 'P07']"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 4.32e-10 degree (tolerance 3e-07), computed with EPSG:1314"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "1314"
+            ],
+            "name": "OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
+            "accuracy_m": 2.0,
+            "available": true
+          },
+          {
+            "codes": [
+              "7710"
+            ],
+            "name": "OSGB36 to WGS 84 (9)",
+            "accuracy_m": 1.0,
+            "available": false
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "1314"
+          ],
+          "accuracy_m": 2.0
+        },
+        "expected_outside": [
+          "P02",
+          "P07"
+        ]
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "P02 (47.36N, 2.96E, central France) and P07 (64.45N, 124.27E, eastern Siberia) lie outside the area of use of OSGB36 and of EPSG:1314; swapping lat/lon does not bring either into Great Britain, so they look like rows that don't belong. Not transformed (null values); would only transform them on the owner's say-so, marked as outside.",
+      "agent_assumptions": "Read as OSGB36 (EPSG:4277) decimal degrees, latitude first, west negative."
+    },
+    {
+      "test_id": "tfm-reverse-roundtrip",
+      "title": "WGS 84 to OSGB36, with a round trip",
+      "gigs_ref": "5203 (reverse direction and round trip)",
+      "checks": [
+        {
+          "check": "source CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4326; expected EPSG:4326 or CRS84"
+        },
+        {
+          "check": "target CRS identified",
+          "result": "pass",
+          "detail": "said EPSG:4277; expected EPSG:4277"
+        },
+        {
+          "check": "operation chosen",
+          "result": "pass",
+          "detail": "used EPSG:1314; acceptable: EPSG:1314, EPSG:7710 (best stated accuracy whose area of use contains the points)"
+        },
+        {
+          "check": "points outside the area of use flagged",
+          "result": "pass",
+          "detail": "flagged none; expected none"
+        },
+        {
+          "check": "coordinates within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 4.96e-10 degree (tolerance 3e-07), computed with EPSG:1314"
+        },
+        {
+          "check": "round trip within GIGS tolerance",
+          "result": "pass",
+          "detail": "largest difference 1.30e-08 (tolerance 6e-08)"
+        },
+        {
+          "check": "computed with a tool, not by hand",
+          "result": "pass",
+          "detail": "computed_by: library"
+        },
+        {
+          "check": "provenance recorded",
+          "result": "pass",
+          "detail": "operation, accuracy, EPSG version, engine"
+        }
+      ],
+      "info": {
+        "acceptable": [
+          {
+            "codes": [
+              "1314"
+            ],
+            "name": "Inverse of OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
+            "accuracy_m": 2.0,
+            "available": true
+          },
+          {
+            "codes": [
+              "7710"
+            ],
+            "name": "Inverse of OSGB36 to WGS 84 (9)",
+            "accuracy_m": 1.0,
+            "available": false
+          }
+        ],
+        "best_available": {
+          "codes": [
+            "1314"
+          ],
+          "accuracy_m": 2.0
+        },
+        "expected_outside": []
+      },
+      "agent_epsg_version": "v12.029",
+      "agent_notes": "Round trip WGS 84 -> OSGB36 -> WGS 84 with the same operation (EPSG:1314) returns inputs within 2e-8 deg (GIGS tolerance 6e-8).",
+      "agent_assumptions": "GPS positions read as WGS 84 (EPSG:4326) decimal degrees, latitude first, west negative."
+    }
+  ]
+}

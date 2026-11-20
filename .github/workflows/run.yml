@@ -1,0 +1,44 @@
+name: Run the agent tests
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Claude model for the built-in agent"
+        required: true
+        default: "claude-haiku-5-5"
+      skills:
+        description: "Give the agent the skills (yes/no)"
+        required: true
+        default: "yes"
+      seed:
+        description: "Seed (blank for a fresh draw)"
+        required: false
+permissions:
+  contents: write
+concurrency: agent-tests
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r requirements.txt
+      - name: Run and grade
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PROJ_NETWORK: "ON"
+        run: |
+          ARGS="--agent claude-api --model ${{ github.event.inputs.model }} --label ${{ github.event.inputs.model }}"
+          if [ "${{ github.event.inputs.skills }}" = "no" ]; then ARGS="$ARGS --no-skills"; fi
+          if [ -n "${{ github.event.inputs.seed }}" ]; then ARGS="$ARGS --seed ${{ github.event.inputs.seed }}"; fi
+          python -m harness run $ARGS
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A results
+          git diff --cached --quiet || git commit -m "Agent test results"
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done

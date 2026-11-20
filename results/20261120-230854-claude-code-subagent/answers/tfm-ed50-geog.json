@@ -1,0 +1,49 @@
+{
+  "test_id": "tfm-ed50-geog",
+  "source_crs": "EPSG:4230",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1311",
+    "name": "ED50 to WGS 84 (18)",
+    "accuracy_m": 1,
+    "why": "Best stated accuracy (1 m) for the UK North Sea; area 'Europe - common offshore' contains all points (Norway-specific 1613/1612 don't cover the UK sector). Chosen explicitly, not PROJ's default."
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 58.501924628,
+      "lon": 0.904982633
+    },
+    {
+      "id": "P02",
+      "lat": 59.119799914,
+      "lon": -0.361315398
+    },
+    {
+      "id": "P03",
+      "lat": 58.999679468,
+      "lon": 0.981596047
+    },
+    {
+      "id": "P04",
+      "lat": 58.331996516,
+      "lon": 0.520816868
+    },
+    {
+      "id": "P05",
+      "lat": 57.133262681,
+      "lon": -0.813009909
+    },
+    {
+      "id": "P06",
+      "lat": 59.759576461,
+      "lon": -0.375579788
+    }
+  ],
+  "outside_area_of_use": [],
+  "assumptions": "Read as ED50 (EPSG:4230) decimal degrees, latitude first, west negative; all points in the UK sector offshore.",
+  "notes": "Datum shifts in the expected 110-125 m range; round trip checked internally."
+}
