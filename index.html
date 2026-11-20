@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GIGS for agents</title>
+<link rel="icon" href="data:,">
+<meta name="description" content="Testing how AI agents handle coordinates, the way IOGP's GIGS tests geoscience software.">
+<style>
+  :root {
+    --ink: #1c2226; --muted: #5b6770; --line: #d9dee2; --paper: #fbfaf7; --card: #ffffff;
+    --accent: #0b6e69; --accent-soft: #e3f1ef; --bad: #b4462c; --bad-soft: #f8e6e0; --warn: #8a6d1d; --warn-soft: #f6efd8;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+         font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+  header { padding: 56px 0 28px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+  .kicker { font: 600 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: clamp(32px, 6vw, 46px); line-height: 1.1; margin: 12px 0 14px; letter-spacing: -.02em; }
+  .lede { font-size: 19px; color: var(--muted); max-width: 680px; margin: 0; }
+  h2 { font-size: 24px; margin: 52px 0 12px; letter-spacing: -.01em; }
+  h3 { font-size: 17px; margin: 0 0 6px; }
+  p { max-width: 700px; }
+  a { color: var(--accent); }
+  code, pre { font-family: var(--mono); font-size: 13.5px; }
+  code { background: #eef0ee; padding: 1px 5px; border-radius: 4px; }
+  pre { background: #1f2a2e; color: #e6ece9; padding: 14px 16px; border-radius: 8px; overflow-x: auto; line-height: 1.5; }
+  pre code { background: none; padding: 0; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 16px 12px; }
+  .step .n { font: 700 13px var(--mono); color: var(--accent); }
+  .step p { font-size: 14.5px; color: var(--muted); margin: 4px 0 0; }
+  @media (max-width: 720px) { .steps { grid-template-columns: 1fr; } }
+  .note { font-size: 14px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12.5px; text-transform: uppercase; letter-spacing: .04em;
+       border-bottom: 1px solid var(--line); padding: 8px 8px; }
+  td { border-bottom: 1px solid var(--line); padding: 10px 8px; vertical-align: middle; }
+  tr.run { cursor: pointer; }
+  tr.run:hover td { background: #f3f5f2; }
+  .score { font: 700 15px var(--mono); }
+  .bar { height: 6px; background: var(--line); border-radius: 3px; width: 90px; margin-top: 4px; overflow: hidden; }
+  .bar span { display: block; height: 100%; background: var(--accent); }
+  .pills { display: flex; gap: 3px; flex-wrap: wrap; }
+  .pill { font: 600 11px var(--mono); padding: 2px 5px; border-radius: 4px; background: var(--accent-soft); color: var(--accent); }
+  .pill.bad { background: var(--bad-soft); color: var(--bad); }
+  .tag { font: 600 11.5px var(--mono); padding: 2px 6px; border-radius: 4px; background: #eef0ee; color: var(--muted); }
+  .tag.yes { background: var(--accent-soft); color: var(--accent); }
+  tr.detail td { background: #fdfdfb; font-size: 14px; padding: 12px 14px 16px; }
+  .fail { border-left: 3px solid var(--bad); padding: 4px 10px; margin: 6px 0; }
+  .nv { border-left: 3px solid var(--warn); padding: 4px 10px; margin: 6px 0; }
+  .fail b, .nv b { font-weight: 600; }
+  .dim { color: var(--muted); }
+  .scroll { overflow-x: auto; }
+  .tests-key { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; font-size: 14px; margin-top: 10px; }
+  .tests-key code { background: none; padding: 0; color: var(--accent); }
+  .pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  @media (max-width: 720px) { .pair { grid-template-columns: 1fr; } }
+  .pair h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  .pair pre { font-size: 12.5px; max-height: 380px; white-space: pre-wrap; word-break: break-word; }
+  footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="kicker">Draft · an experiment for the IOGP GIGS repositories</div>
+  <h1>GIGS for agents</h1>
+  <p class="lede">AI agents are starting to handle coordinates. When they get it wrong there's no error message; the
+  well just lands 100&nbsp;m away. This tests them the way GIGS has long tested geoscience software.</p>
+</header>
+
+<h2>The idea</h2>
+<p>The <a href="https://github.com/IOGP-GIGS">IOGP GIGS test series</a> checks that software gets coordinate
+reference systems and operations right, against published points and tolerances. Libraries like PROJ pass those tests.
+An agent shouldn't be doing the arithmetic anyway: it should call a library. What an agent adds, and can get wrong, is
+the decisions.</p>
+<p>What system are these numbers in? Which of the nine OSGB36&nbsp;to&nbsp;WGS&nbsp;84 transformations applies here?
+Which rows don't belong? What gets recorded so someone can check it next year? Those are what this tests, alongside
+the numbers themselves.</p>
+
+<h2>How a run works</h2>
+<div class="steps">
+  <div class="step"><div class="n">1 · PACKET</div><h3>Fresh tasks</h3>
+    <p>Plain-language tasks with points and EPSG codes drawn at random for this run. No answers anywhere.</p></div>
+  <div class="step"><div class="n">2 · AGENT</div><h3>Any agent</h3>
+    <p>Pointed at the folder, with or without the skills. It works however it likes and writes JSON answers.</p></div>
+  <div class="step"><div class="n">3 · GRADER</div><h3>Scored after</h3>
+    <p>Works out the expected answers from the EPSG registry via PROJ, then checks numbers against GIGS tolerances
+    and decisions against a checklist.</p></div>
+</div>
+<p class="note">Because the expected answers don't exist until grading, there's nothing to peek at. An agent that
+"cheats" by running PROJ with the right operation has just done the job properly.</p>
+
+<h2>Results</h2>
+<p>Each row is one run of the pilot series. Click a row to see what failed. Runs with the same seed got the same
+points and codes, so they compare like for like.</p>
+<div class="scroll">
+<table id="runs">
+  <thead><tr><th>Run</th><th>Skills</th><th>Score</th><th>By test</th></tr></thead>
+  <tbody><tr><td colspan="4" class="dim">Loading results…</td></tr></tbody>
+</table>
+</div>
+<div class="tests-key" id="key"></div>
+
+<h2>What a task looks like</h2>
+<p>From one of the runs above: OSGB36 positions to move to WGS&nbsp;84, with two rows that don't belong. On the
+right, the agent's answer (trimmed).</p>
+<div class="pair">
+  <div><h3>Task</h3><pre id="ex-task">…</pre></div>
+  <div><h3>Answer</h3><pre id="ex-answer">…</pre></div>
+</div>
+
+<h2>What gets checked</h2>
+<p>For each transformation task: the source and target CRSs identified; the operation chosen (the best stated
+accuracy among those whose area of use contains the points, or the best that needs no grid file); points outside the
+area of use flagged; coordinates within GIGS tolerance (0.0000003°, or 0.00000006° for a round trip); computed with
+a tool, not by hand; and provenance recorded: operation, accuracy, EPSG version, engine. For deprecation: deprecated
+or not, and the replacement (direct, or the live record at the end of the chain).</p>
+
+<h2>Try it on your agent</h2>
+<p>You need Python and pyproj. Then:</p>
+<pre><code>git clone https://github.com/pushpingeo/gigs && cd gigs
+pip install -r requirements.txt
+python -m harness build                 # prints the packet folder
+#   tell your agent: "Read INSTRUCTIONS.md in this folder and do what it says."
+python -m harness grade runs/&lt;run-id&gt;    # writes results/&lt;run-id&gt;/report.md</code></pre>
+<p>If your agent has a command line, the harness can run it for you:</p>
+<pre><code>python -m harness run --agent command --cmd 'your-agent "Read INSTRUCTIONS.md and do what it says."'</code></pre>
+<p>Or use the small built-in Claude loop: <code>python -m harness run --agent claude-api --model claude-haiku-5-5</code>
+(needs <code>ANTHROPIC_API_KEY</code>). Add <code>--no-skills</code> to see what the skills are worth.</p>
+
+<h2>The skills</h2>
+<p>Two plain-markdown skills that any agent can be given. They're the useful part even if you never run a test.</p>
+<p><a href="https://github.com/pushpingeo/gigs/blob/main/skills/coordinate-reference/SKILL.md"><b>coordinate-reference</b></a>:
+what to decide. The ISO 19111 model, the EPSG registry and how to work with it, reading coordinates, choosing a
+transformation by area of use and accuracy, deprecation, and what to record.</p>
+<p><a href="https://github.com/pushpingeo/gigs/blob/main/skills/coordinate-operations/SKILL.md"><b>coordinate-operations</b></a>:
+how to compute. Use a library (PROJ, recommended) or build your own engine and prove it on GIGS first, plus the
+things libraries do quietly: per-point defaults, ballpark fallbacks, missing grids.</p>
+
+<h2>Limits, so far</h2>
+<p>Seven tasks is a pilot, not a test series. Areas of use are checked against bounding boxes, not the registry's
+outlines. Deprecation covers CRSs only. The grader uses the EPSG version in its copy of PROJ (v12.029), not the
+v10.019 that GIGS&nbsp;2.1 was built on. And the tasks are UK and North Sea heavy, because that's what I know best.</p>
+
+<footer>
+  Rob Dunfey · <a href="https://github.com/pushpingeo/gigs">github.com/pushpingeo/gigs</a><br>
+  GIGS is the property of IOGP and published under the GIGS License; this project copies none of its data and is not
+  an IOGP product. The EPSG Geodetic Parameter Dataset is maintained by IOGP (<a href="https://epsg.org">epsg.org</a>)
+  and read here through PROJ.
+</footer>
+</main>
+
+<script>
+const REPO = "https://github.com/pushpingeo/gigs/blob/main/results/";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const short = id => id.replace(/^tfm-/, "").replace(/^dep-/, "dep ");
+
+function runName(r) {
+  if (r.model) return r.model;
+  return r.label || r.id;
+}
+
+async function load() {
+  const body = document.querySelector("#runs tbody");
+  let data;
+  try {
+    data = await (await fetch("results/index.json", {cache: "no-store"})).json();
+  } catch (e) {
+    body.innerHTML = '<tr><td colspan="4" class="dim">Couldn\'t load results/index.json.</td></tr>';
+    return;
+  }
+  const runs = data.runs.slice().sort((a, b) => (b.summary.score ?? 0) - (a.summary.score ?? 0) || a.created.localeCompare(b.created));
+  body.innerHTML = "";
+  runs.forEach((r, i) => {
+    const s = r.summary, total = s.passed + s.failed;
+    const pct = s.score == null ? 0 : Math.round(s.score * 100);
+    const pills = r.tests.map(t => `<span class="pill ${t.passed < t.total ? "bad" : ""}" title="${esc(t.title)}">${t.passed}/${t.total}</span>`).join("");
+    const how = !r.agent ? "" : r.agent.startsWith("claude-api") ? "built-in API loop" : r.agent.startsWith("Claude Code") ? "Claude Code" : r.agent;
+    const tr = document.createElement("tr");
+    tr.className = "run";
+    tr.innerHTML = `<td><b>${esc(runName(r))}</b><br><span class="dim" style="font-size:12.5px">${esc(how)} · seed ${r.seed}</span></td>
+      <td><span class="tag ${r.skills ? "yes" : ""}">${r.skills ? "with" : "without"}</span></td>
+      <td><span class="score">${pct}%</span> <span class="dim" style="font-size:12.5px">${s.passed}/${total}</span>
+          <div class="bar"><span style="width:${pct}%"></span></div></td>
+      <td><div class="pills">${pills}</div></td>`;
+    const det = document.createElement("tr");
+    det.className = "detail"; det.hidden = true;
+    const fails = r.tests.flatMap(t => t.fails.map(c => `<div class="fail"><b>${esc(t.id)}</b> · ${esc(c.check)}<br><span class="dim">${esc(c.detail)}</span></div>`));
+    const nv = r.tests.flatMap(t => t.not_verified.map(c => `<div class="nv"><b>${esc(t.id)}</b> · ${esc(c.check)}: not verified<br><span class="dim">${esc(c.detail)}</span></div>`));
+    const usage = r.usage ? ` · ${Math.round((r.usage.input_tokens + (r.usage.cache_read_input_tokens || 0) + (r.usage.cache_creation_input_tokens || 0)) / 1000)}k tokens in, ${Math.round(r.usage.output_tokens / 1000)}k out` : "";
+    det.innerHTML = `<td colspan="4">${fails.join("") || '<div class="dim">Every check passed.</div>'}${nv.join("")}
+      <div class="dim" style="margin-top:8px;font-size:13px">Grader: ${esc(r.grader)}${usage} ·
+      <a href="${REPO}${encodeURIComponent(r.id)}/report.md">full report</a></div></td>`;
+    tr.onclick = () => { det.hidden = !det.hidden; };
+    body.append(tr, det);
+  });
+  if (runs.length) {
+    document.getElementById("key").innerHTML = "<span class='dim' style='grid-column:1/-1'>By test, in order:</span>" +
+      runs[0].tests.map(t => `<code>${esc(t.id)}</code><span>${esc(t.title)}</span>`).join("");
+    example(runs);
+  }
+}
+
+async function example(runs) {
+  const r = runs.find(x => x.agent && x.agent.startsWith("claude-api")) || runs[0];
+  try {
+    const task = await (await fetch(`results/${r.id}/tasks/tfm-outside-area.json`)).json();
+    const ans = await (await fetch(`results/${r.id}/answers/tfm-outside-area.json`)).json();
+    task.points = task.points.slice(0, 4).concat([{"…": `${task.points.length - 4} more`}]);
+    const keep = {test_id: ans.test_id, source_crs: ans.source_crs, target_crs: ans.target_crs, operation: ans.operation,
+                  computed_by: ans.computed_by, computed_with: ans.computed_with, epsg_version: ans.epsg_version,
+                  results: (ans.results || []).slice(0, 3).concat([{"…": "more"}]), outside_area_of_use: ans.outside_area_of_use,
+                  notes: ans.notes};
+    document.getElementById("ex-task").textContent = JSON.stringify(task, null, 2);
+    document.getElementById("ex-answer").textContent = JSON.stringify(keep, null, 2);
+  } catch (e) {
+    document.getElementById("ex-task").textContent = "(example not available)";
+    document.getElementById("ex-answer").textContent = "";
+  }
+}
+load();
+</script>
+</body>
+</html>

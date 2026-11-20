@@ -75,19 +75,32 @@ def _call(body):
         return json.loads(r.read())
 
 
+def _mark_cache(messages):
+    """Prompt caching: one breakpoint on the newest user turn, so each call re-reads the history from cache."""
+    for m in messages:
+        if isinstance(m["content"], list):
+            for blk in m["content"]:
+                blk.pop("cache_control", None)
+    last = messages[-1]
+    if isinstance(last["content"], str):
+        last["content"] = [{"type": "text", "text": last["content"]}]
+    last["content"][-1]["cache_control"] = {"type": "ephemeral"}
+
+
 def run_claude_api(packet, model, max_turns=60, max_tokens=8000):
     packet = Path(packet)
     listing = "\n".join(sorted(str(x.relative_to(packet)) for x in packet.rglob("*") if x.is_file()))
     system = ("You are an agent working in a folder of coordinate tasks. Use the tools to read files, run Python and "
               "write answers. Files in the folder:\n" + listing)
     messages = [{"role": "user", "content": KICKOFF}]
-    usage = {"input_tokens": 0, "output_tokens": 0}
+    usage = {"input_tokens": 0, "output_tokens": 0, "cache_read_input_tokens": 0, "cache_creation_input_tokens": 0}
     log = []
     for turn in range(max_turns):
-        resp = _call({"model": model, "max_tokens": max_tokens, "system": system, "tools": TOOLS,
-                      "messages": messages})
+        _mark_cache(messages)
+        resp = _call({"model": model, "max_tokens": max_tokens, "tools": TOOLS, "messages": messages,
+                      "system": [{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}]})
         for k in usage:
-            usage[k] += resp.get("usage", {}).get(k, 0)
+            usage[k] += resp.get("usage", {}).get(k) or 0
         messages.append({"role": "assistant", "content": resp["content"]})
         calls = [b for b in resp["content"] if b["type"] == "tool_use"]
         log += [{"turn": turn, "text": b["text"][:2000]} for b in resp["content"] if b["type"] == "text"]
