@@ -1,0 +1,17 @@
+{
+  "seed": 101,
+  "series": "pilot",
+  "skills": false,
+  "created": "2026-11-20T23:27:58+00:00",
+  "grader_registry": "v12.029 (2025-10-02)",
+  "grader_engine": "pyproj 3.8.0 / PROJ 9.8.1",
+  "tests": [
+    "dep-codes",
+    "tfm-bng",
+    "tfm-ed50-geog",
+    "tfm-ed50-utm31",
+    "tfm-osgb36-geog",
+    "tfm-outside-area",
+    "tfm-reverse-roundtrip"
+  ]
+}

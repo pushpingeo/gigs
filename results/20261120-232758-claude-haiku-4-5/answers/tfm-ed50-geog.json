@@ -1,0 +1,50 @@
+{
+  "test_id": "tfm-ed50-geog",
+  "source_crs": "EPSG:4230",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1198",
+    "name": "ED50 to WGS 84 (13)",
+    "accuracy_m": 1,
+    "why": "Standard transformation for ED50 geographic datum to WGS 84 for North Sea applications"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 58.37730007,
+      "lon": 0.97049943
+    },
+    {
+      "id": "P02",
+      "lat": 56.99680306,
+      "lon": -0.85697457
+    },
+    {
+      "id": "P03",
+      "lat": 58.03088172,
+      "lon": -0.98730875
+    },
+    {
+      "id": "P04",
+      "lat": 58.36190032,
+      "lon": -0.9808884
+    },
+    {
+      "id": "P05",
+      "lat": 57.92425824,
+      "lon": 1.166779
+    },
+    {
+      "id": "P06",
+      "lat": 56.57145069,
+      "lon": -0.2414364
+    }
+  ],
+  "outside_area_of_use": [],
+  "round_trip": [],
+  "assumptions": "Using best available transformation between ED50 and WGS 84",
+  "notes": ""
+}

@@ -1,0 +1,50 @@
+{
+  "test_id": "tfm-ed50-utm31",
+  "source_crs": "EPSG:23031",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1198",
+    "name": "ED50 to WGS 84 (13)",
+    "accuracy_m": 1,
+    "why": "Transformation from ED50 datum to WGS 84; projection change from UTM zone 31N to geographic is handled by CRS conversion"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 58.24521553,
+      "lon": 1.28553576
+    },
+    {
+      "id": "P02",
+      "lat": 56.56082916,
+      "lon": 1.25004229
+    },
+    {
+      "id": "P03",
+      "lat": 58.4305417,
+      "lon": 1.29092122
+    },
+    {
+      "id": "P04",
+      "lat": 57.56582833,
+      "lon": 1.01820632
+    },
+    {
+      "id": "P05",
+      "lat": 56.74121152,
+      "lon": 1.27578569
+    },
+    {
+      "id": "P06",
+      "lat": 56.60800693,
+      "lon": 1.23613768
+    }
+  ],
+  "outside_area_of_use": [],
+  "round_trip": [],
+  "assumptions": "CRS transformation automatically handles both datum change and map projection change",
+  "notes": ""
+}

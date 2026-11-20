@@ -1,0 +1,63 @@
+{
+  "test_id": "tfm-outside-area",
+  "source_crs": "EPSG:4277",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1314",
+    "name": "OSGB36 to WGS 84 (6)",
+    "accuracy_m": 2,
+    "why": "Standard transformation for OSGB36 to WGS 84"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 51.33751997,
+      "lon": -0.6690307
+    },
+    {
+      "id": "P02",
+      "lat": 52.32757064,
+      "lon": -1.80064092
+    },
+    {
+      "id": "P03",
+      "lat": 57.4070591,
+      "lon": -4.85548209
+    },
+    {
+      "id": "P04",
+      "lat": 54.11629016,
+      "lon": -2.5752663
+    },
+    {
+      "id": "P05",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "P06",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "P07",
+      "lat": 57.12945476,
+      "lon": -4.58166313
+    },
+    {
+      "id": "P08",
+      "lat": 57.41208102,
+      "lon": -4.38928564
+    }
+  ],
+  "outside_area_of_use": [
+    "P05",
+    "P06"
+  ],
+  "round_trip": [],
+  "assumptions": "Points outside OSGB36 area of use (Great Britain and surrounding) are marked with null values and listed",
+  "notes": "Identified 2 points outside OSGB36 validity area"
+}

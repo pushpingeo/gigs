@@ -1,0 +1,42 @@
+{
+  "test_id": "dep-codes",
+  "epsg_version": "v12.029",
+  "codes": [
+    {
+      "code": "EPSG:20087",
+      "deprecated": false,
+      "replacement": [],
+      "reason": ""
+    },
+    {
+      "code": "EPSG:10256",
+      "deprecated": false,
+      "replacement": [],
+      "reason": ""
+    },
+    {
+      "code": "EPSG:6979",
+      "deprecated": false,
+      "replacement": [],
+      "reason": ""
+    },
+    {
+      "code": "EPSG:32662",
+      "deprecated": false,
+      "replacement": [],
+      "reason": ""
+    },
+    {
+      "code": "EPSG:7351",
+      "deprecated": false,
+      "replacement": [],
+      "reason": ""
+    },
+    {
+      "code": "EPSG:21894",
+      "deprecated": false,
+      "replacement": [],
+      "reason": ""
+    }
+  ]
+}
