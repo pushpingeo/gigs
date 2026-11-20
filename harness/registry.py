@@ -151,3 +151,19 @@ def live_crs(table, area=None):
     q = f"select code, name from {table} where auth_name='EPSG' and deprecated=0"
     rows = db().execute(q).fetchall()
     return [(str(c), n) for c, n in rows]
+
+
+def live_replacements(code, seen=None):
+    """Follow replacements until they reach records that are not deprecated."""
+    seen = seen or set()
+    out = set()
+    for r in replacements(code):
+        if r in seen:
+            continue
+        seen.add(r)
+        rec = object_record(r)
+        if rec and rec[2]:
+            out |= set(live_replacements(r, seen))
+        else:
+            out.add(r)
+    return sorted(out)

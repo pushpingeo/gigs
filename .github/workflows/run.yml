@@ -13,6 +13,10 @@ on:
       seed:
         description: "Seed (blank for a fresh draw)"
         required: false
+      mode:
+        description: "run = run an agent; regrade = regrade every folder in results/ with the current grader"
+        required: true
+        default: "run"
 permissions:
   contents: write
 concurrency: agent-tests
@@ -25,7 +29,13 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: pip install -r requirements.txt
+      - name: Regrade all results
+        if: github.event.inputs.mode == 'regrade'
+        env:
+          PROJ_NETWORK: "ON"
+        run: for d in results/*/; do python -m harness grade "$d" --label "$(head -1 "$d/report.md" | sed 's/^# Run //')"; done
       - name: Run and grade
+        if: github.event.inputs.mode != 'regrade'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           PROJ_NETWORK: "ON"

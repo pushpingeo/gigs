@@ -159,8 +159,10 @@ def grade_deprecation(test, task, ans):
                             f"said {a.get('deprecated')}; registry: {'deprecated' if dep else 'live'} ({rec[1] if rec else '?'})"))
         if dep:
             got = sorted(registry.code_of(x) for x in a.get("replacement") or [])
-            checks.append(check(f"EPSG:{c} replacement", got == repl,
-                                f"said {['EPSG:' + g for g in got]}; registry: {['EPSG:' + r for r in repl]}"))
+            live = registry.live_replacements(c)
+            chain = f"; following the chain to live records: {['EPSG:' + r for r in live]}" if live != repl else ""
+            checks.append(check(f"EPSG:{c} replacement", got in (repl, live),
+                                f"said {['EPSG:' + g for g in got]}; registry: {['EPSG:' + r for r in repl]}{chain}"))
         info.append({"code": f"EPSG:{c}", "name": rec[1] if rec else None, "deprecated": dep,
                      "replacement": ["EPSG:" + r for r in repl], "agent_reason": a.get("reason")})
     return checks, {"codes": info}
@@ -169,8 +171,9 @@ def grade_deprecation(test, task, ans):
 def grade(run_dir, results_dir=None, label=None):
     run = Path(run_dir)
     meta = json.loads((run / "run.json").read_text())
-    packet = run / "packet"
+    packet = run / "packet" if (run / "packet").exists() else run  # a run folder, or a results folder to regrade
     out = []
+    meta.setdefault("skills", True)
     for tid in meta["tests"]:
         test = json.loads((ROOT / "tests" / meta["series"] / f"{tid}.json").read_text())
         task = json.loads((packet / "tasks" / f"{tid}.json").read_text())
@@ -199,6 +202,8 @@ def grade(run_dir, results_dir=None, label=None):
     agent_info = {}
     if (run / "agent.json").exists():
         agent_info = json.loads((run / "agent.json").read_text())
+    elif (run / "scores.json").exists():
+        agent_info = json.loads((run / "scores.json").read_text()).get("agent", {})
     scores = {"run": meta, "agent": agent_info, "summary": {"passed": passed, "failed": failed, "not_verified": na,
               "score": round(passed / (passed + failed), 3) if passed + failed else None}, "tests": out}
     if results_dir:
@@ -207,10 +212,13 @@ def grade(run_dir, results_dir=None, label=None):
         (res / "scores.json").write_text(json.dumps(scores, indent=2))
         (res / "report.md").write_text(report(scores, label))
         for sub in ("tasks", "answers"):
+            if res.resolve() == packet.resolve():
+                break
             if (res / sub).exists():
                 shutil.rmtree(res / sub)
             shutil.copytree(packet / sub, res / sub)
-        shutil.copy(run / "run.json", res / "run.json")
+        if res.resolve() != run.resolve():
+            shutil.copy(run / "run.json", res / "run.json")
     return scores
 
 

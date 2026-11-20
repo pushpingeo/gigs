@@ -34,7 +34,7 @@ def main():
 
     if a.cmd == "grade":
         run = Path(a.run_dir)
-        res = ROOT / "results" / run.name
+        res = run if run.resolve().parent == (ROOT / "results").resolve() else ROOT / "results" / run.name
         s = grade.grade(run, res, a.label or run.name)
         print(json.dumps(s["summary"]), "->", res / "report.md")
         return
