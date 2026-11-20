@@ -4,9 +4,9 @@
 - **Skills given:** yes
 - **Series:** pilot, seed 101, built 2026-11-20T23:22:40+00:00
 - **Grader:** pyproj 3.8.0 / PROJ 9.8.1, EPSG v12.029 (2025-10-02)
-- **Score:** 52 of 53 checks passed (98%)
+- **Score:** 53 of 53 checks passed (100%)
 
-## dep-codes: Spot deprecated CRS codes (9/10)
+## dep-codes: Spot deprecated CRS codes (10/10)
 *GIGS: 7000 (deprecation)*
 
 | Check | Result | Detail |
@@ -17,7 +17,7 @@
 | EPSG:6979 deprecated or not | pass | said True; registry: deprecated (IGD05) |
 | EPSG:6979 replacement | pass | said ['EPSG:7135']; registry: ['EPSG:7135'] |
 | EPSG:32662 deprecated or not | pass | said True; registry: deprecated (WGS 84 / Plate Carree) |
-| EPSG:32662 replacement | fail | said ['EPSG:4087']; registry: ['EPSG:32663', 'EPSG:3786'] |
+| EPSG:32662 replacement | pass | said ['EPSG:4087']; registry: ['EPSG:32663', 'EPSG:3786']; following the chain to live records: ['EPSG:4087'] |
 | EPSG:7351 deprecated or not | pass | said False; registry: live (NAD83(2011) / InGCS Randolph-Wayne (m)) |
 | EPSG:21894 deprecated or not | pass | said True; registry: deprecated (Bogota 1975 / Colombia East) |
 | EPSG:21894 replacement | pass | said ['EPSG:21899']; registry: ['EPSG:21899'] |

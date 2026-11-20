@@ -85,10 +85,10 @@
    "created": "2026-11-20T23:22:40+00:00",
    "grader": "pyproj 3.8.0 / PROJ 9.8.1, EPSG v12.029 (2025-10-02)",
    "summary": {
-    "passed": 52,
-    "failed": 1,
+    "passed": 53,
+    "failed": 0,
     "not_verified": 0,
-    "score": 0.981
+    "score": 1.0
    },
    "usage": {
     "input_tokens": 712086,
@@ -98,15 +98,9 @@
     {
      "id": "dep-codes",
      "title": "Spot deprecated CRS codes",
-     "passed": 9,
+     "passed": 10,
      "total": 10,
-     "fails": [
-      {
-       "check": "EPSG:32662 replacement",
-       "result": "fail",
-       "detail": "said ['EPSG:4087']; registry: ['EPSG:32663', 'EPSG:3786']"
-      }
-     ],
+     "fails": [],
      "not_verified": []
     },
     {

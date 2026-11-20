@@ -234,10 +234,10 @@
     ]
   },
   "summary": {
-    "passed": 52,
-    "failed": 1,
+    "passed": 53,
+    "failed": 0,
     "not_verified": 0,
-    "score": 0.981
+    "score": 1.0
   },
   "tests": [
     {
@@ -277,8 +277,8 @@
         },
         {
           "check": "EPSG:32662 replacement",
-          "result": "fail",
-          "detail": "said ['EPSG:4087']; registry: ['EPSG:32663', 'EPSG:3786']"
+          "result": "pass",
+          "detail": "said ['EPSG:4087']; registry: ['EPSG:32663', 'EPSG:3786']; following the chain to live records: ['EPSG:4087']"
         },
         {
           "check": "EPSG:7351 deprecated or not",

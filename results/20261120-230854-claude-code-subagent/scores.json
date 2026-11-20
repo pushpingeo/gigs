@@ -187,26 +187,26 @@
         "acceptable": [
           {
             "codes": [
+              "7710"
+            ],
+            "name": "Inverse of British National Grid + OSGB36 to WGS 84 (9) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          },
+          {
+            "codes": [
               "1314"
             ],
             "name": "Inverse of British National Grid + OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
             "accuracy_m": 2.0,
             "available": true
-          },
-          {
-            "codes": [
-              "7710"
-            ],
-            "name": "Inverse of British National Grid + OSGB36 to WGS 84 (9)",
-            "accuracy_m": 1.0,
-            "available": false
           }
         ],
         "best_available": {
           "codes": [
-            "1314"
+            "7710"
           ],
-          "accuracy_m": 2.0
+          "accuracy_m": 1.0
         },
         "expected_outside": []
       },
@@ -387,26 +387,26 @@
         "acceptable": [
           {
             "codes": [
+              "7710"
+            ],
+            "name": "OSGB36 to WGS 84 (9) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          },
+          {
+            "codes": [
               "1314"
             ],
             "name": "OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
             "accuracy_m": 2.0,
             "available": true
-          },
-          {
-            "codes": [
-              "7710"
-            ],
-            "name": "OSGB36 to WGS 84 (9)",
-            "accuracy_m": 1.0,
-            "available": false
           }
         ],
         "best_available": {
           "codes": [
-            "1314"
+            "7710"
           ],
-          "accuracy_m": 2.0
+          "accuracy_m": 1.0
         },
         "expected_outside": []
       },
@@ -459,26 +459,26 @@
         "acceptable": [
           {
             "codes": [
+              "7710"
+            ],
+            "name": "OSGB36 to WGS 84 (9) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          },
+          {
+            "codes": [
               "1314"
             ],
             "name": "OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
             "accuracy_m": 2.0,
             "available": true
-          },
-          {
-            "codes": [
-              "7710"
-            ],
-            "name": "OSGB36 to WGS 84 (9)",
-            "accuracy_m": 1.0,
-            "available": false
           }
         ],
         "best_available": {
           "codes": [
-            "1314"
+            "7710"
           ],
-          "accuracy_m": 2.0
+          "accuracy_m": 1.0
         },
         "expected_outside": [
           "P02",
@@ -539,26 +539,26 @@
         "acceptable": [
           {
             "codes": [
+              "7710"
+            ],
+            "name": "Inverse of OSGB36 to WGS 84 (9) (with axis order normalized for visualization)",
+            "accuracy_m": 1.0,
+            "available": true
+          },
+          {
+            "codes": [
               "1314"
             ],
             "name": "Inverse of OSGB36 to WGS 84 (6) (with axis order normalized for visualization)",
             "accuracy_m": 2.0,
             "available": true
-          },
-          {
-            "codes": [
-              "7710"
-            ],
-            "name": "Inverse of OSGB36 to WGS 84 (9)",
-            "accuracy_m": 1.0,
-            "available": false
           }
         ],
         "best_available": {
           "codes": [
-            "1314"
+            "7710"
           ],
-          "accuracy_m": 2.0
+          "accuracy_m": 1.0
         },
         "expected_outside": []
       },
