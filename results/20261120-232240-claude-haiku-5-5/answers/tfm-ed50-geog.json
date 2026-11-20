@@ -1,0 +1,49 @@
+{
+  "test_id": "tfm-ed50-geog",
+  "source_crs": "EPSG:4230",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1311",
+    "name": "ED50 to WGS 84 (18)",
+    "accuracy_m": 1,
+    "why": "Best stated accuracy (1 m) whose area (Europe - common offshore, covers UKCS) contains all points; not the PROJ default EPSG:1138 (6 m)."
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 58.377311739,
+      "lon": 0.970494701
+    },
+    {
+      "id": "P02",
+      "lat": 56.996814293,
+      "lon": -0.856982573
+    },
+    {
+      "id": "P03",
+      "lat": 58.030893715,
+      "lon": -0.987315874
+    },
+    {
+      "id": "P04",
+      "lat": 58.361912554,
+      "lon": -0.980895179
+    },
+    {
+      "id": "P05",
+      "lat": 57.924269537,
+      "lon": 1.166773983
+    },
+    {
+      "id": "P06",
+      "lat": 56.571461439,
+      "lon": -0.241444179
+    }
+  ],
+  "outside_area_of_use": [],
+  "assumptions": "Input is ED50 geographic (EPSG:4230) latitude/longitude as given.",
+  "notes": "Candidate EPSG:1613 (Norway offshore, 1 m) ruled out: its area starts at 1.37E and none of the points lie inside it."
+}
