@@ -1,0 +1,101 @@
+{
+  "test_id": "tfm-osgb36-geog",
+  "source_crs": "EPSG:4277",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:7710",
+    "name": "OSGB36 to WGS 84 (9)",
+    "accuracy_m": 1.0,
+    "why": "OSGB36 to WGS 84 (9) selected with 1m accuracy for Great Britain area"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 53.7641759,
+      "lon": -2.33906354
+    },
+    {
+      "id": "P02",
+      "lat": 52.43972116,
+      "lon": -2.1439116
+    },
+    {
+      "id": "P03",
+      "lat": 54.16253132,
+      "lon": -2.50174625
+    },
+    {
+      "id": "P04",
+      "lat": 53.85520889,
+      "lon": -2.08874384
+    },
+    {
+      "id": "P05",
+      "lat": 57.37955245,
+      "lon": -5.18668287
+    },
+    {
+      "id": "P06",
+      "lat": 52.08508949,
+      "lon": -3.68005534
+    },
+    {
+      "id": "P07",
+      "lat": 53.76858459,
+      "lon": -2.33265768
+    },
+    {
+      "id": "P08",
+      "lat": 52.25091338,
+      "lon": -3.31454985
+    }
+  ],
+  "outside_area_of_use": [],
+  "round_trip": [
+    {
+      "id": "P01",
+      "lat": 53.7639478,
+      "lon": -2.3376246
+    },
+    {
+      "id": "P02",
+      "lat": 52.4393353,
+      "lon": -2.1425067
+    },
+    {
+      "id": "P03",
+      "lat": 54.1623557,
+      "lon": -2.5003081
+    },
+    {
+      "id": "P04",
+      "lat": 53.8549886,
+      "lon": -2.0872681
+    },
+    {
+      "id": "P05",
+      "lat": 57.3798274,
+      "lon": -5.1854666
+    },
+    {
+      "id": "P06",
+      "lat": 52.0846875,
+      "lon": -3.6788261
+    },
+    {
+      "id": "P07",
+      "lat": 53.768357,
+      "lon": -2.3312177
+    },
+    {
+      "id": "P08",
+      "lat": 52.2505252,
+      "lon": -3.313278
+    }
+  ],
+  "assumptions": "All survey sites assumed within Great Britain",
+  "notes": "OSGB36 geographic is based on OSGB36 datum. All points well within area of use."
+}

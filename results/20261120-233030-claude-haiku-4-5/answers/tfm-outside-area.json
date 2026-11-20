@@ -1,0 +1,104 @@
+{
+  "test_id": "tfm-outside-area",
+  "source_crs": "EPSG:4277",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:7710",
+    "name": "OSGB36 to WGS 84 (9)",
+    "accuracy_m": 1.0,
+    "why": "OSGB36 to WGS 84 (9) with 1m accuracy for Great Britain and nearshore"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 51.33751997,
+      "lon": -0.6690307
+    },
+    {
+      "id": "P02",
+      "lat": 52.32757064,
+      "lon": -1.80064092
+    },
+    {
+      "id": "P03",
+      "lat": 57.4070591,
+      "lon": -4.85548209
+    },
+    {
+      "id": "P04",
+      "lat": 54.11629016,
+      "lon": -2.5752663
+    },
+    {
+      "id": "P05",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "P06",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "P07",
+      "lat": 57.12945476,
+      "lon": -4.58166313
+    },
+    {
+      "id": "P08",
+      "lat": 57.41208102,
+      "lon": -4.38928564
+    }
+  ],
+  "outside_area_of_use": [
+    "P05",
+    "P06"
+  ],
+  "round_trip": [
+    {
+      "id": "P01",
+      "lat": 51.3369993,
+      "lon": -0.6675104
+    },
+    {
+      "id": "P02",
+      "lat": 52.327166,
+      "lon": -1.7992033
+    },
+    {
+      "id": "P03",
+      "lat": 57.4073313,
+      "lon": -4.8542183
+    },
+    {
+      "id": "P04",
+      "lat": 54.1161102,
+      "lon": -2.57384
+    },
+    {
+      "id": "P05",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "P06",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "P07",
+      "lat": 57.1296885,
+      "lon": -4.5803758
+    },
+    {
+      "id": "P08",
+      "lat": 57.4123459,
+      "lon": -4.3879577
+    }
+  ],
+  "assumptions": "OSGB36 area of use defined by bounding box: lon -8.6 to 1.9, lat 49.9 to 60.9",
+  "notes": "Points P05, P06 are outside OSGB36 area of use and were not transformed. These likely represent data entry errors or points from other regions."
+}

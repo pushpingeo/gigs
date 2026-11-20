@@ -1,0 +1,14 @@
+{
+  "test_id": "dep-codes",
+  "title": "Spot deprecated CRS codes",
+  "task": "A colleague's project list uses the EPSG codes below for coordinate reference systems. For each one, say whether it is deprecated in the EPSG Dataset and, if it is, which code or codes replace it and why it was deprecated.",
+  "answer_format": "deprecation",
+  "codes": [
+    "EPSG:20087",
+    "EPSG:10256",
+    "EPSG:6979",
+    "EPSG:32662",
+    "EPSG:7351",
+    "EPSG:21894"
+  ]
+}

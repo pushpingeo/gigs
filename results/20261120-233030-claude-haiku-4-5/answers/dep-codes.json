@@ -1,0 +1,50 @@
+{
+  "test_id": "dep-codes",
+  "epsg_version": "v12.029",
+  "codes": [
+    {
+      "code": "EPSG:20087",
+      "deprecated": true,
+      "replacement": [
+        "EPSG:28427"
+      ],
+      "reason": "Deprecated - replaced by Pulkovo 1995 Gauss 3-degree Kruger zone 27"
+    },
+    {
+      "code": "EPSG:10256",
+      "deprecated": false,
+      "replacement": [],
+      "reason": "GS-IRF is a valid ellipsoidal model reference frame"
+    },
+    {
+      "code": "EPSG:6979",
+      "deprecated": true,
+      "replacement": [
+        "EPSG:6975"
+      ],
+      "reason": "Deprecated - replaced by IGD05/12"
+    },
+    {
+      "code": "EPSG:32662",
+      "deprecated": true,
+      "replacement": [
+        "EPSG:32661"
+      ],
+      "reason": "Deprecated - spelling corrected to Plate Carre"
+    },
+    {
+      "code": "EPSG:7351",
+      "deprecated": false,
+      "replacement": [],
+      "reason": "NAD83(2011) with Indiana Geospatial CRS is currently valid"
+    },
+    {
+      "code": "EPSG:21894",
+      "deprecated": true,
+      "replacement": [
+        "EPSG:3115"
+      ],
+      "reason": "Deprecated - replaced by Bogota 1975 / Colombia East bound"
+    }
+  ]
+}

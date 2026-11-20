@@ -1,0 +1,38 @@
+{
+  "test_id": "tfm-ed50-utm31",
+  "title": "ED50 / UTM zone 31N to WGS 84",
+  "task": "These platform positions in the UK central North Sea are ED50 / UTM zone 31N eastings and northings in metres. Give them as WGS 84 latitude and longitude, and record how you did it.",
+  "answer_format": "transformation",
+  "points": [
+    {
+      "id": "P01",
+      "easting": 399450.57,
+      "northing": 6457506.77
+    },
+    {
+      "id": "P02",
+      "easting": 392541.99,
+      "northing": 6270085.85
+    },
+    {
+      "id": "P03",
+      "easting": 400290.6,
+      "northing": 6478128.77
+    },
+    {
+      "id": "P04",
+      "easting": 381543.97,
+      "northing": 6382319.38
+    },
+    {
+      "id": "P05",
+      "easting": 394628.74,
+      "northing": 6290120.53
+    },
+    {
+      "id": "P06",
+      "easting": 391822.5,
+      "northing": 6275358.03
+    }
+  ]
+}

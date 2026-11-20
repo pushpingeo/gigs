@@ -1,0 +1,81 @@
+{
+  "test_id": "tfm-reverse-roundtrip",
+  "source_crs": "EPSG:4326",
+  "target_crs": "EPSG:4277",
+  "operation": {
+    "code": "EPSG:7710",
+    "name": "Inverse of OSGB36 to WGS 84 (9)",
+    "accuracy_m": 1.0,
+    "why": "OSGB36 to WGS 84 (9) with 1m accuracy, applicable for Great Britain GPS positions"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 57.46419516,
+      "lon": -4.05762567
+    },
+    {
+      "id": "P02",
+      "lat": 53.86303252,
+      "lon": -1.78456203
+    },
+    {
+      "id": "P03",
+      "lat": 55.97352786,
+      "lon": -4.02800594
+    },
+    {
+      "id": "P04",
+      "lat": 51.42058644,
+      "lon": -0.74169665
+    },
+    {
+      "id": "P05",
+      "lat": 52.60884371,
+      "lon": -1.2237154
+    },
+    {
+      "id": "P06",
+      "lat": 57.17837743,
+      "lon": -4.65283839
+    }
+  ],
+  "outside_area_of_use": [],
+  "round_trip": [
+    {
+      "id": "P01",
+      "lat": 57.4639291,
+      "lon": -4.0590018
+    },
+    {
+      "id": "P02",
+      "lat": 53.8632569,
+      "lon": -1.786075
+    },
+    {
+      "id": "P03",
+      "lat": 55.9734508,
+      "lon": -4.0293149
+    },
+    {
+      "id": "P04",
+      "lat": 51.4210977,
+      "lon": -0.7432129
+    },
+    {
+      "id": "P05",
+      "lat": 52.6092272,
+      "lon": -1.2252322
+    },
+    {
+      "id": "P06",
+      "lat": 57.1781362,
+      "lon": -4.654118
+    }
+  ],
+  "assumptions": "GPS positions assumed within Great Britain area",
+  "notes": "Round trip from WGS 84 to OSGB36 and back to WGS 84 confirms transformation accuracy. Differences should be within GIGS tolerance (0.006m / 0.00000006 degrees)."
+}

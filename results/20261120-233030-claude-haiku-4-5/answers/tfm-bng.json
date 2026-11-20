@@ -1,0 +1,101 @@
+{
+  "test_id": "tfm-bng",
+  "source_crs": "EPSG:27700",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:7710",
+    "name": "OSGB36 to WGS 84 (9)",
+    "accuracy_m": 1.0,
+    "why": "OSGB36 to WGS 84 (9) is the best available transformation with 1m accuracy for Great Britain and UKCS"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 57.26686943,
+      "lon": -5.00795538
+    },
+    {
+      "id": "P02",
+      "lat": 52.13279406,
+      "lon": -3.52514278
+    },
+    {
+      "id": "P03",
+      "lat": 54.07000259,
+      "lon": -2.06747859
+    },
+    {
+      "id": "P04",
+      "lat": 52.5154572,
+      "lon": -1.99315735
+    },
+    {
+      "id": "P05",
+      "lat": 53.64246961,
+      "lon": -1.53331764
+    },
+    {
+      "id": "P06",
+      "lat": 53.99156589,
+      "lon": -2.3685242
+    },
+    {
+      "id": "P07",
+      "lat": 52.03624764,
+      "lon": -3.7446607
+    },
+    {
+      "id": "P08",
+      "lat": 54.07490603,
+      "lon": -2.33875273
+    }
+  ],
+  "outside_area_of_use": [],
+  "round_trip": [
+    {
+      "id": "P01",
+      "easting": 218710.98,
+      "northing": 823588.38
+    },
+    {
+      "id": "P02",
+      "easting": 295705.59,
+      "northing": 249373.05
+    },
+    {
+      "id": "P03",
+      "easting": 395682.04,
+      "northing": 463785.9
+    },
+    {
+      "id": "P04",
+      "easting": 400560.99,
+      "northing": 290839.62
+    },
+    {
+      "id": "P05",
+      "easting": 430950.86,
+      "northing": 416316.72
+    },
+    {
+      "id": "P06",
+      "easting": 375935.63,
+      "northing": 455119.6
+    },
+    {
+      "id": "P07",
+      "easting": 280423.5,
+      "northing": 238974.26
+    },
+    {
+      "id": "P08",
+      "easting": 377932.07,
+      "northing": 464382.67
+    }
+  ],
+  "assumptions": "All coordinates within valid BNG range (0-700km E, 0-1200km N)",
+  "notes": "British National Grid is based on OSGB36 with Transverse Mercator projection. The transformation includes automatic BNG inverse."
+}

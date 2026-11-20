@@ -1,0 +1,81 @@
+{
+  "test_id": "tfm-ed50-utm31",
+  "source_crs": "EPSG:23031",
+  "target_crs": "EPSG:4326",
+  "operation": {
+    "code": "EPSG:1311",
+    "name": "ED50 to WGS 84 (18)",
+    "accuracy_m": 1.0,
+    "why": "ED50 to WGS 84 transformation selected for North Sea area with 1m accuracy"
+  },
+  "computed_by": "library",
+  "computed_with": "pyproj 3.8.0 / PROJ 9.8.1",
+  "epsg_version": "v12.029",
+  "results": [
+    {
+      "id": "P01",
+      "lat": 58.24522701,
+      "lon": 1.28553121
+    },
+    {
+      "id": "P02",
+      "lat": 56.56083947,
+      "lon": 1.25003597
+    },
+    {
+      "id": "P03",
+      "lat": 58.43055331,
+      "lon": 1.29091689
+    },
+    {
+      "id": "P04",
+      "lat": 57.56583941,
+      "lon": 1.01820078
+    },
+    {
+      "id": "P05",
+      "lat": 56.74122195,
+      "lon": 1.27577957
+    },
+    {
+      "id": "P06",
+      "lat": 56.60801728,
+      "lon": 1.23613139
+    }
+  ],
+  "outside_area_of_use": [],
+  "round_trip": [
+    {
+      "id": "P01",
+      "easting": 399450.57,
+      "northing": 6457506.77
+    },
+    {
+      "id": "P02",
+      "easting": 392541.99,
+      "northing": 6270085.85
+    },
+    {
+      "id": "P03",
+      "easting": 400290.6,
+      "northing": 6478128.77
+    },
+    {
+      "id": "P04",
+      "easting": 381543.97,
+      "northing": 6382319.38
+    },
+    {
+      "id": "P05",
+      "easting": 394628.74,
+      "northing": 6290120.53
+    },
+    {
+      "id": "P06",
+      "easting": 391822.5,
+      "northing": 6275358.03
+    }
+  ],
+  "assumptions": "All platform positions within ED50/UTM zone 31N coverage",
+  "notes": "ED50 / UTM zone 31N is a projected CRS for UK North Sea platforms"
+}

@@ -413,6 +413,107 @@
      "not_verified": []
     }
    ]
+  },
+  {
+   "id": "20261120-233030-claude-haiku-4-5",
+   "label": "claude-haiku-4-5",
+   "agent": "claude-api (built-in loop)",
+   "model": "claude-haiku-4-5",
+   "skills": true,
+   "seed": 101,
+   "created": "2026-11-20T23:30:30+00:00",
+   "grader": "pyproj 3.8.0 / PROJ 9.8.1, EPSG v12.029 (2025-10-02)",
+   "summary": {
+    "passed": 49,
+    "failed": 4,
+    "not_verified": 0,
+    "score": 0.925
+   },
+   "usage": {
+    "input_tokens": 2940,
+    "output_tokens": 27319,
+    "cache_read_input_tokens": 652945,
+    "cache_creation_input_tokens": 48253
+   },
+   "tests": [
+    {
+     "id": "dep-codes",
+     "title": "Spot deprecated CRS codes",
+     "passed": 6,
+     "total": 10,
+     "fails": [
+      {
+       "check": "EPSG:20087 replacement",
+       "result": "fail",
+       "detail": "said ['EPSG:28427']; registry: ['EPSG:2486']"
+      },
+      {
+       "check": "EPSG:6979 replacement",
+       "result": "fail",
+       "detail": "said ['EPSG:6975']; registry: ['EPSG:7135']"
+      },
+      {
+       "check": "EPSG:32662 replacement",
+       "result": "fail",
+       "detail": "said ['EPSG:32661']; registry: ['EPSG:32663', 'EPSG:3786']; following the chain to live records: ['EPSG:4087']"
+      },
+      {
+       "check": "EPSG:21894 replacement",
+       "result": "fail",
+       "detail": "said ['EPSG:3115']; registry: ['EPSG:21899']"
+      }
+     ],
+     "not_verified": []
+    },
+    {
+     "id": "tfm-bng",
+     "title": "British National Grid to WGS 84",
+     "passed": 7,
+     "total": 7,
+     "fails": [],
+     "not_verified": []
+    },
+    {
+     "id": "tfm-ed50-geog",
+     "title": "ED50 North Sea positions to WGS 84",
+     "passed": 7,
+     "total": 7,
+     "fails": [],
+     "not_verified": []
+    },
+    {
+     "id": "tfm-ed50-utm31",
+     "title": "ED50 / UTM zone 31N to WGS 84",
+     "passed": 7,
+     "total": 7,
+     "fails": [],
+     "not_verified": []
+    },
+    {
+     "id": "tfm-osgb36-geog",
+     "title": "OSGB36 latitude/longitude to WGS 84",
+     "passed": 7,
+     "total": 7,
+     "fails": [],
+     "not_verified": []
+    },
+    {
+     "id": "tfm-outside-area",
+     "title": "OSGB36 to WGS 84 with stray points",
+     "passed": 7,
+     "total": 7,
+     "fails": [],
+     "not_verified": []
+    },
+    {
+     "id": "tfm-reverse-roundtrip",
+     "title": "WGS 84 to OSGB36, with a round trip",
+     "passed": 8,
+     "total": 8,
+     "fails": [],
+     "not_verified": []
+    }
+   ]
   }
  ]
 }
