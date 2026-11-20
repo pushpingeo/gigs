@@ -56,7 +56,12 @@ python -m harness run --agent command --cmd 'claude -p "Read INSTRUCTIONS.md and
 ```
 ANTHROPIC_API_KEY=... python -m harness run --agent claude-api --model claude-haiku-5-5
 ```
-Add `--no-skills` to see how an agent does without them. The GitHub Actions workflow *Run the agent tests* does the
+Add `--no-skills` to see how an agent does without them.
+
+**On Databricks.** Add this repo as a Git folder (Workspace → Create → Git folder, URL
+`https://github.com/pushpingeo/gigs`; a public repo needs no credentials), open `databricks/run_gigs.py` and run the
+cells in order. It tests any chat model served in the workspace, through the OpenAI-compatible endpoint. The same loop
+works elsewhere: `--agent openai-compatible` with `OPENAI_BASE_URL` and `OPENAI_API_KEY` set. The GitHub Actions workflow *Run the agent tests* does the
 API run and commits the report; it needs an `ANTHROPIC_API_KEY` repository secret.
 
 `python -m harness.reference_agent runs/<run-id>/packet` answers a packet with a script (no AI) that follows the

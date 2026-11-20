@@ -5,6 +5,9 @@
               --cmd 'claude -p "Follow INSTRUCTIONS.md" --allowedTools Bash,Read,Write'
 - claude-api: a small built-in agent loop on the Anthropic Messages API, with three tools (run Python, read a file,
               write a file), all confined to the packet. Needs ANTHROPIC_API_KEY.
+- openai-compatible: the same loop for any chat-completions API with tool calling, e.g. Databricks model serving
+              endpoints (see databricks/run_gigs.py), or any OpenAI-compatible server. Pass a client, or set
+              OPENAI_BASE_URL and OPENAI_API_KEY.
 Adding an adapter for another agent means adding a function here; the tests and the grader don't change.
 """
 import json
@@ -114,3 +117,54 @@ def run_claude_api(packet, model, max_turns=60, max_tokens=8000):
             {"type": "tool_result", "tool_use_id": c["id"], "content": _tool(packet, c["name"], c["input"])}
             for c in calls]})
     return {"agent": "claude-api (built-in loop)", "model": model, "turns": turn + 1, "usage": usage, "log": log}
+
+
+# --- openai-compatible (Databricks model serving and others) -----------------------------------------------------
+
+OPENAI_TOOLS = [{"type": "function", "function": {"name": t["name"], "description": t["description"],
+                                                  "parameters": t["input_schema"]}} for t in TOOLS]
+
+
+def run_openai_compatible(packet, model, client=None, max_turns=60, max_tokens=8000):
+    """Agent loop over the chat-completions API. `client` is an openai.OpenAI instance (Databricks:
+    WorkspaceClient().serving_endpoints.get_open_ai_client()); `model` is the endpoint name."""
+    if client is None:
+        from openai import OpenAI  # pip install openai
+        client = OpenAI(base_url=os.environ["OPENAI_BASE_URL"], api_key=os.environ["OPENAI_API_KEY"])
+    packet = Path(packet)
+    listing = "\n".join(sorted(str(x.relative_to(packet)) for x in packet.rglob("*") if x.is_file()))
+    messages = [{"role": "system", "content": "You are an agent working in a folder of coordinate tasks. Use the tools "
+                 "to read files, run Python and write answers. Files in the folder:\n" + listing},
+                {"role": "user", "content": KICKOFF}]
+    usage = {"input_tokens": 0, "output_tokens": 0}
+    log = []
+    turn = 0
+    for turn in range(max_turns):
+        resp = client.chat.completions.create(model=model, messages=messages, tools=OPENAI_TOOLS, max_tokens=max_tokens)
+        if getattr(resp, "usage", None):
+            usage["input_tokens"] += resp.usage.prompt_tokens or 0
+            usage["output_tokens"] += resp.usage.completion_tokens or 0
+        msg = resp.choices[0].message
+        calls = msg.tool_calls or []
+        entry = {"role": "assistant", "content": msg.content or ""}
+        if calls:
+            entry["tool_calls"] = [{"id": c.id, "type": "function",
+                                    "function": {"name": c.function.name, "arguments": c.function.arguments}}
+                                   for c in calls]
+        messages.append(entry)
+        if msg.content:
+            log.append({"turn": turn, "text": str(msg.content)[:2000]})
+        if not calls:
+            if resp.choices[0].finish_reason == "length":
+                messages.append({"role": "user", "content": "Your reply was cut off. Continue."})
+                continue
+            break
+        for c in calls:
+            log.append({"turn": turn, "tool": c.function.name, "input": c.function.arguments[:500]})
+            try:
+                args = json.loads(c.function.arguments or "{}")
+                out = _tool(packet, c.function.name, args)
+            except json.JSONDecodeError as e:
+                out = f"error: arguments were not valid JSON: {e}"
+            messages.append({"role": "tool", "tool_call_id": c.id, "content": out})
+    return {"agent": "openai-compatible (built-in loop)", "model": model, "turns": turn + 1, "usage": usage, "log": log}

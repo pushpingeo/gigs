@@ -2,7 +2,7 @@
 
   build  [--seed N] [--no-skills] [--series pilot]       make a packet in runs/<id>/packet and stop
   grade  runs/<id> [--label L]                            grade a finished packet into results/<id>/
-  run    --agent files|command|claude-api [--cmd ...] [--model ...] [--seed N] [--no-skills] [--label L]
+  run    --agent files|command|claude-api|openai-compatible [--cmd ...] [--model ...] [--seed N] [--no-skills] [--label L]
 """
 import argparse
 import datetime as dt
@@ -24,7 +24,7 @@ def main():
         p.add_argument("--no-skills", action="store_true")
         p.add_argument("--label")
         if name == "run":
-            p.add_argument("--agent", choices=["files", "command", "claude-api"], required=True)
+            p.add_argument("--agent", choices=["files", "command", "claude-api", "openai-compatible"], required=True)
             p.add_argument("--cmd", help="shell command for --agent command; runs in the packet folder")
             p.add_argument("--model", default="claude-haiku-5-5")
     g = sub.add_parser("grade")
@@ -49,6 +49,8 @@ def main():
         return
     if a.agent == "command":
         info = agents.run_command(run / "packet", a.cmd)
+    elif a.agent == "openai-compatible":
+        info = agents.run_openai_compatible(run / "packet", a.model)
     else:
         info = agents.run_claude_api(run / "packet", a.model)
     (run / "agent.json").write_text(json.dumps(info, indent=2))
